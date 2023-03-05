@@ -3,7 +3,7 @@ import { useLoading } from '../store/loading'
 import { API_URL } from './config'
 
 /**
- * This is our small wrapper library about the browser's native fetch().
+ * This is our small wrapper library around the browser's native fetch().
  * The main functionality is to simplify making requests into a one liner of code
  *
  * ```
