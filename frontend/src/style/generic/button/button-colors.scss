@@ -11,28 +11,28 @@
       color: var(--color-text);
     }
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }
   }
 
   &.btn-accent {
-    background-color: var(--color-accent-bg);
-    color: var(--color-text);
+    // background-color: var(--color-accent-bg);
+    // color: var(--color-accent);
+
+    // svg {
+    //   color: var(--color-text);
+    // }
+
+    background-color: var(--color-accent);
+    color: var(--color-text-invert);
 
     svg {
-      color: var(--color-text);
-    }
-
-    &:focus,
-    &:hover {
-      background-color: var(--color-accent);
       color: var(--color-text-invert);
-
-      svg {
-        color: var(--color-text-invert);
-      }
+    }
+    &:focus-visible,
+    &:hover {
     }
   }
 }

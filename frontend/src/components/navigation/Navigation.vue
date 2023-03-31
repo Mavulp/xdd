@@ -8,8 +8,6 @@
       <img src="/icons/logo.svg" alt="">
     </RouterLink>
 
-    <div class="flex-1" />
-
     <nav>
       <ul>
         <li>
@@ -21,8 +19,6 @@
         <li><a href="/">Your Projects</a></li>
       </ul>
     </nav>
-
-    <div class="flex-1" />
 
     <a href="" class="user">
       <div class="pfp">

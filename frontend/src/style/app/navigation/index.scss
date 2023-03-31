@@ -1,7 +1,8 @@
 header {
-  @include flex(30px);
+  @include grid(30px, 3);
+  // @include flex(30px);
   width: 100%;
-  padding: 20px 40px;
+  padding: 40px;
 
   a:not(.disable-hover) {
     text-decoration: none;
@@ -31,6 +32,7 @@ header {
   }
 
   nav {
+    justify-self: center;
     ul {
       @include flex(30px);
       list-style: none;
@@ -41,7 +43,7 @@ header {
           display: block;
           font-size: 1.6rem;
           color: var(--color-text);
-          padding: 0 10px;
+          padding: 0 15px;
           height: 35px;
           line-height: 35px;
           z-index: 5;
@@ -58,6 +60,7 @@ header {
     @include grid(10px, 35px 1fr);
     align-items: center;
     padding-right: 10px;
+    justify-self: end;
 
     .pfp {
       @include flex(0, center, center);

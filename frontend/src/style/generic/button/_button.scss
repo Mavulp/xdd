@@ -5,9 +5,9 @@
   @include font(500);
   @include t();
   @include flex(5px, center);
-  border-radius: var(--radius-tn);
-  height: 36px;
-  line-height: 36px;
+  // border-radius: var(--radius-tn);
+  height: 35px;
+  line-height: 35px;
   padding: 0 15px;
   font-size: 1.2rem;
   color: var(--color-text-light);
@@ -16,7 +16,7 @@
 
   svg {
     @include t();
-    font-size: 1.4rem;
+    font-size: 2.4rem;
     color: var(--color-text-light);
   }
 
