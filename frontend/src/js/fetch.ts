@@ -83,7 +83,8 @@ export function upload<T = any>(url: string, body: object | string, options?: ob
 // Private handler functions
 
 async function _handleFetch<T>(url: string, options: object) {
-  const token = localStorage.getItem('quotes_bearer_token')
+  // const token = localStorage.getItem('quotes_bearer_token')
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiZG9sYW5za2UiLCJpc3N1ZWRfYXQiOjE2ODA1NjAzNjksImdyb3VwcyI6W119.G66Aeajwtq6aVDbtp7AC2-2DW0Mql0JSF_iDd0cc8KU'
 
   merge(options, {
     mode: 'cors',

@@ -1,5 +1,7 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
+import { get } from '../../js/fetch'
+import type { Alias } from '../../types/global'
 
 /**
  * This is the wrapper component around each 'page'.
@@ -8,7 +10,6 @@ import { ref } from 'vue'
  * Not much logic is usually done here, except fetching data and/or displaying loading states etc
  */
 
-// TODO: Split into components
 type DisplayTypes = 'small-icon' | 'large-icon' | 'list'
 
 const search = ref('')
@@ -25,29 +26,18 @@ function toggleItem(item: string) {
 }
 
 /**
+ * List
+ */
+
+const data = ref<Alias[]>([])
+
+onBeforeMount(async () => {
+  data.value = await get('/api/alias').catch(() => ([]))
+})
+
+/**
  * This is testing data for list
  */
-const test = ref<Array<{
-  name: string
-  content: string
-}>>([])
-const loading = ref(false)
-
-async function createTestData() {
-  loading.value = true
-  const data = []
-
-  for (let i = 0; i <= 100; i++) {
-    data.push({
-      name: `${i + 1}`,
-      content: 'https://picsum.photos/200/200',
-    })
-  }
-
-  test.value = data
-}
-
-createTestData()
 </script>
 
 <template>
@@ -102,9 +92,18 @@ createTestData()
       </div>
     </div>
 
-    <div class="list">
+    <template v-if="data.length === 0">
+      <div class="list-no-data">
+        <p>There are no aliases right now.</p>
+        <button class="button btn-gray">
+          Add Alias
+        </button>
+      </div>
+    </template>
+
+    <div v-else class="list">
       <button
-        v-for="item in test"
+        v-for="item in data"
         :key="item.name"
         class="list-item"
       >

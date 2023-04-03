@@ -3,7 +3,7 @@
  */
 
 // The root api url, eg: https://api.service.com
-export const API_URL = ''
+export const API_URL = 'https://xdd.hivecom.net'
 
 // Checks wether the site is viewed in a local server or not
 export const __DEV__ = Boolean(
