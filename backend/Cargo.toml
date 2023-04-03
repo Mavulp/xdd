@@ -24,6 +24,7 @@ futures = "0.3.25"
 utoipa = { version = "3.0.0", features = ["axum_extras", "openapi_extensions"] }
 utoipa-swagger-ui = { version = "3.0.2", features = ["axum"] }
 itertools = "0.10.5"
+ts-rs = { version = "6.2.1", features = ["format"] }
 
 [dependencies.rusqlite_migration]
 git = "https://github.com/cljoly/rusqlite_migration"

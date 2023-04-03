@@ -7,6 +7,7 @@ use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
 use serde_rusqlite::from_row;
 use tracing::{debug, info};
+use ts_rs::TS;
 use utoipa::ToSchema;
 
 use std::sync::Arc;
@@ -15,7 +16,8 @@ use std::time::SystemTime;
 use crate::error::Error;
 use crate::AppState;
 
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
 #[serde(rename_all = "camelCase")]
 pub struct User {
     #[schema(example = "alice")]

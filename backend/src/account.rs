@@ -5,6 +5,7 @@ use idlib::AuthorizeCookie;
 use rusqlite::{params, OptionalExtension, ToSql};
 use serde::{Deserialize, Serialize};
 use serde_rusqlite::from_row;
+use ts_rs::TS;
 use utoipa::ToSchema;
 
 use std::sync::Arc;
@@ -29,7 +30,8 @@ pub async fn get_login(
 }
 
 /// Account fields that can be adjusted.
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Serialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
     /// The theme of the colors for the UI, this setting is private and can't be seen by other
@@ -91,7 +93,8 @@ pub async fn get_settings(
         .await
 }
 
-#[derive(Debug, Deserialize, ToSchema)]
+#[derive(Debug, Deserialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
 #[serde(rename_all = "camelCase")]
 pub struct PutSettings {
     /// The theme of the colors for the UI, this setting is private and can't be seen by other

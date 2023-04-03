@@ -7,6 +7,7 @@ use axum::{extract::Path, Extension, Json};
 use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
 use serde_rusqlite::from_row;
+use ts_rs::TS;
 use utoipa::ToSchema;
 
 use std::sync::Arc;
@@ -23,11 +24,12 @@ use crate::AppState;
 ///
 /// # Example
 /// Quotes and hivefriends allow replacements in comments by prefixing with '!'.
-/// ```
+/// ```markdown
 /// Alias: "fb", "foobar"  
 /// Comment: "I like !fb" -> "I like foobar"
 /// ```
-#[derive(Debug, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
 #[serde(rename_all = "camelCase")]
 pub struct Alias {
     /// A short handle for users to easily remember the alias.
@@ -218,7 +220,8 @@ type HasEditAliases = Has<"edit-aliases">;
 
 /// A list of fields that can be updated for an alias. To leave
 /// fields as they are they can be skipped, set to null or set to a whitespace only string.
-#[derive(Debug, Deserialize, ToSchema)]
+#[derive(Debug, Deserialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
 #[serde(rename_all = "camelCase")]
 pub struct PutAlias {
     /// The content of the alias which is to be used as the replacement.
