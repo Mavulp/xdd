@@ -17,12 +17,37 @@ const filter = ref(new Set())
 
 const types = ['Text', 'Emotes', 'Photos', 'Gifs']
 
-function toggleItem(item) {
+function toggleItem(item: string) {
   if (filter.value.has(item))
     filter.value.delete(item)
   else
     filter.value.add(item)
 }
+
+/**
+ * This is testing data for list
+ */
+const test = ref<Array<{
+  name: string
+  content: string
+}>>([])
+const loading = ref(false)
+
+async function createTestData() {
+  loading.value = true
+  const data = []
+
+  for (let i = 0; i <= 100; i++) {
+    data.push({
+      name: `${i + 1}`,
+      content: 'https://picsum.photos/200/200',
+    })
+  }
+
+  test.value = data
+}
+
+createTestData()
 </script>
 
 <template>
@@ -41,27 +66,18 @@ function toggleItem(item) {
             v-for="item in types"
             :key="item"
             class="button"
-            :class="{ 'btn-accent': filter.has(item) }"
+            :class="[filter.has(item) ? 'btn-accent' : 'btn-white']"
             @click="toggleItem(item)"
           >
             {{ item }}
           </button>
-          <!-- <button class="button">
-            Emotes
-          </button>
-          <button class="button">
-            Photos
-          </button>
-          <button class="button">
-            Gifs
-          </button> -->
         </div>
 
         <div class="list-display-types">
           <button
             class="button btn-icon"
             data-title-bottom="Small Icons"
-            :class="{ 'btn-accent': displayType === 'small-icon' }"
+            :class="[displayType === 'small-icon' ? 'btn-accent' : 'btn-white']"
             @click="displayType = 'small-icon'"
           >
             <Icon icon="ph:dots-nine-bold" />
@@ -69,7 +85,7 @@ function toggleItem(item) {
           <button
             class="button btn-icon"
             data-title-bottom="Large Icons"
-            :class="{ 'btn-accent': displayType === 'large-icon' }"
+            :class="[displayType === 'large-icon' ? 'btn-accent' : 'btn-white']"
             @click="displayType = 'large-icon'"
           >
             <Icon icon="ph:squares-four-fill" />
@@ -77,7 +93,7 @@ function toggleItem(item) {
           <button
             class="button btn-icon"
             data-title-bottom="List"
-            :class="{ 'btn-accent': displayType === 'list' }"
+            :class="[displayType === 'list' ? 'btn-accent' : 'btn-white']"
             @click="displayType = 'list'"
           >
             <Icon icon="ph:list-bullets" />
@@ -85,6 +101,21 @@ function toggleItem(item) {
         </div>
       </div>
     </div>
-    Hello World
+
+    <div class="list">
+      <button
+        v-for="item in test"
+        :key="item.name"
+        class="list-item"
+      >
+        <div class="thumbnail">
+          <img :src="item.content" alt="">
+        </div>
+
+        <div class="name">
+          <span>{{ item.name }}</span>
+        </div>
+      </button>
+    </div>
   </div>
 </template>
