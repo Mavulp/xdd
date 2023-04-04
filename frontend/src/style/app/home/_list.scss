@@ -61,3 +61,10 @@
     }
   }
 }
+
+.list-empty {
+  @include flex($j: center, $d: column);
+  border-radius: 10px;
+  border: 1px dashed var(--color-border);
+  padding: 60px;
+}

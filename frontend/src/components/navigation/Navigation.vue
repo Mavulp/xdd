@@ -15,7 +15,11 @@
             Aliases
           </RouterLink>
         </li>
-        <li><a href="/">Create</a></li>
+        <li>
+          <RouterLink :to="{ name: 'RouteCreate' }">
+            Create
+          </RouterLink>
+        </li>
         <li><a href="/">Your Projects</a></li>
       </ul>
     </nav>

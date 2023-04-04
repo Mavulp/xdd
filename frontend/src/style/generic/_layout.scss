@@ -2,6 +2,11 @@
 Utility layout classes
 */
 
+:root {
+  --container-mid: 840px;
+  --container-padding: 0 30px;
+}
+
 .flex {
   @include flex(15px);
 
@@ -37,5 +42,16 @@ Utility layout classes
 
   &.c-small {
     max-width: 680px;
+  }
+}
+
+.container {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--container-padding);
+
+  &.mid {
+    max-width: var(--container-mid);
   }
 }

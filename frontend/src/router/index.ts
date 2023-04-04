@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import afterEach from './guards/afterEach'
 
-// import RouterMain from './routes/router-main'
-// import RouterQuote from './routes/router-quote'
 import RouteHome from './views/RouteHome.vue'
+import RouteCreate from './views/RouteCreate.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -28,7 +27,15 @@ const router = createRouter({
       // The meta object contains whatever properties you want
       // In our
       meta: {
-        title: 'Home',
+        title: 'Alias List',
+      },
+    },
+    {
+      path: '/create',
+      name: 'RouteCreate',
+      component: RouteCreate,
+      meta: {
+        title: 'New Alias',
       },
     },
   ],
