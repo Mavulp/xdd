@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './style/index.scss'
 import { Icon } from '@iconify/vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
@@ -14,6 +15,7 @@ const app = createApp(App)
 
 // Register plugins in the app
 app.use(router)
+app.use(createPinia())
 
 // Register global components, available without having to specify an import
 app.component('Icon', Icon)

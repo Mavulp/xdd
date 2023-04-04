@@ -3,18 +3,30 @@ Utility layout classes
 */
 
 :root {
+  --container-small: 592px;
   --container-mid: 840px;
+  --container-large: 1024px;
   --container-padding: 0 30px;
 }
 
 .flex {
   @include flex(15px);
+  width: 100%;
 
   &.center {
     justify-content: center;
   }
   &.right {
     justify-content: flex-end;
+  }
+  &.between {
+    justify-content: space-between;
+  }
+  &.top {
+    align-items: flex-start;
+  }
+  &.bottom {
+    align-items: flex-end;
   }
 
   &.gap-8 {
@@ -51,7 +63,15 @@ Utility layout classes
   width: 100%;
   padding: var(--container-padding);
 
+  &.small {
+    max-width: var(--container-small);
+  }
+
   &.mid {
     max-width: var(--container-mid);
+  }
+
+  &.large {
+    max-width: var(--container-large);
   }
 }

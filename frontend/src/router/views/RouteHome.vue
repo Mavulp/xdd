@@ -96,9 +96,9 @@ onBeforeMount(async () => {
       <template v-if="data.length === 0">
         <div class="list-empty">
           <p>There are no aliases right now.</p>
-          <button class="button btn-gray">
+          <router-link :to="{ name: 'RouteCreate' }" class="button btn-gray">
             Add Alias
-          </button>
+          </router-link>
         </div>
       </template>
 

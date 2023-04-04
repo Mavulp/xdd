@@ -6,27 +6,29 @@
   display: block;
   font-size: 1.2rem;
   color: var(--color-red);
-  margin-top: 10px;
+  margin-top: 5px;
+
+  &:first-of-type {
+    padding-top: 5px;
+  }
 }
 
 .form-item {
   display: block;
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
   &:last-child {
     margin-bottom: 0;
   }
 
   label {
-    @include font(400);
+    @include font(600);
     display: block;
     margin-bottom: 5px;
-    font-size: 1.1rem;
+    padding-left: 3px;
+    text-transform: uppercase;
+    font-size: 1rem;
     color: var(--color-text-light);
   }
-}
-
-form {
-  width: 100%;
 }

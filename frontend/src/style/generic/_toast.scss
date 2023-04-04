@@ -2,13 +2,13 @@
 This is the styling for toast notifications
 */
 .toasts-wrap {
-  --toast-max-width: 592px;
-  --toast-min-width: 256px;
+  --toast-max-width: 600px;
+  --toast-min-width: 250px;
 
   display: block;
   position: fixed;
-  bottom: 40px;
-  right: 20px;
+  bottom: 60px;
+  right: 30px;
   max-width: var(--toast-max-width);
   z-index: 1000000;
 
@@ -17,12 +17,13 @@ This is the styling for toast notifications
     width: 100%;
 
     li {
-      @include flex(0, $justify: flex-end);
+      @include flex(0, $j: flex-end);
       width: 100%;
       margin-bottom: 10px;
 
       .toast-item {
-        @include radius(var(--radius-sm));
+        @include t();
+        border-radius: var(--radius-sm);
         display: block;
         padding: 10px 15px;
         min-width: var(--toast-min-width);
@@ -43,7 +44,7 @@ This is the styling for toast notifications
 
         &:before {
           content: "";
-          @include radius(var(--radius-sm));
+          border-radius: var(--radius-sm);
           display: block;
           position: absolute;
           left: 10px;

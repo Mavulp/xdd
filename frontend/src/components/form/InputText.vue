@@ -1,12 +1,12 @@
 <script setup lang='ts'>
+import type { Error } from '@dolanske/v-valid/dist/src/types'
 import { computed, useAttrs } from 'vue'
-import type { ErrorObject } from '@vuelidate/core'
 
 type Value = string | number | null | undefined
 const props = defineProps<{
   modelValue: Value
   label?: string
-  err?: ErrorObject[]
+  err?: Error
   cls?: string
 }>()
 const emit = defineEmits<{
@@ -19,7 +19,7 @@ const value = computed({
 })
 
 const attrs = useAttrs()
-const hasErr = computed(() => props.err && props.err.length > 0)
+const hasErr = computed(() => props.err && Object.keys(props.err.errors).length > 0)
 </script>
 
 <template>
@@ -27,9 +27,9 @@ const hasErr = computed(() => props.err && props.err.length > 0)
     <label v-if="label">{{ label }}</label>
     <input v-model="value" type="text" v-bind="attrs">
 
-    <template v-if="hasErr">
-      <p v-for="item in err" :key="item.$uid" class="form-error">
-        {{ item.$message }}
+    <template v-if="hasErr && props.err">
+      <p v-for="(message, errId) in props.err.errors" :key="errId" class="form-error">
+        {{ message }}
       </p>
     </template>
   </div>
