@@ -49,6 +49,7 @@ pub struct AppState {
     components(schemas(
         user::User,
         alias::Alias,
+        alias::PostAlias,
         alias::PutAlias,
         account::Settings,
         account::PutSettings

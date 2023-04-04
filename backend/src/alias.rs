@@ -28,7 +28,7 @@ use crate::AppState;
 /// Alias: "fb", "foobar"  
 /// Comment: "I like !fb" -> "I like foobar"
 /// ```
-#[derive(Debug, Serialize, Deserialize, TS, ToSchema)]
+#[derive(Debug, Serialize, TS, ToSchema)]
 #[ts(export, export_to = "../frontend/src/types/")]
 #[serde(rename_all = "camelCase")]
 pub struct Alias {
@@ -162,6 +162,19 @@ pub fn get_by_name(conn: &Connection, name: String) -> Result<Alias, Error> {
     Ok(content)
 }
 
+#[derive(Debug, Deserialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
+#[serde(rename_all = "camelCase")]
+pub struct PostAlias {
+    /// A short handle for users to easily remember the alias.
+    #[schema(example = "funny.png")]
+    pub name: String,
+
+    /// The content of the alias which is to be used as the replacement.
+    #[schema(example = "https://example.com/funny.png")]
+    pub content: String,
+}
+
 type HasCreateAliases = Has<"create-aliases">;
 
 /// Create alias from the body.
@@ -170,7 +183,7 @@ type HasCreateAliases = Has<"create-aliases">;
 #[utoipa::path(
     post,
     path = "/api/alias",
-    request_body = Alias,
+    request_body = PostAlias,
     responses(
         (status = 200, description = "The alias was successfully created."),
         (status = 400, description = "One of the values sent in is invalid."),
@@ -181,7 +194,7 @@ type HasCreateAliases = Has<"create-aliases">;
 pub async fn post_alias(
     AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<HasCreateAliases>,
     Extension(state): Extension<Arc<AppState>>,
-    request: Result<Json<Alias>, JsonRejection>,
+    request: Result<Json<PostAlias>, JsonRejection>,
 ) -> impl IntoResponse {
     maybe_token
         .wrap_future(async move {
