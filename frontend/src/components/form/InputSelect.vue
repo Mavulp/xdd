@@ -101,6 +101,7 @@ const computedPosition = computed(() => ({
     <button
       class="select-button"
       :class="{ 'is-empty': !props.modelValue || props.modelValue.length === 0 }"
+      type="button"
       @click="open = !open"
     >
       {{ buttonText }}
@@ -113,6 +114,7 @@ const computedPosition = computed(() => ({
         :key="value"
         class="button btn-small btn-full"
         :class="{ 'is-selected': props.modelValue === value || props.modelValue?.includes(value) }"
+        type="button"
         @click="setValue(value)"
       >
         {{ item }}
