@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type { Error } from '@dolanske/v-valid/dist/src/types'
+import type { Error } from '@dolanske/v-valid/dist/types'
 import { computed, useAttrs } from 'vue'
 
 type Value = string | number | null | undefined

@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, useAttrs } from 'vue'
-import type { Error } from '@dolanske/v-valid/dist/src/types'
+import type { Error } from '@dolanske/v-valid/dist/types'
 
 type Value = string | number | undefined
 const props = defineProps<{
