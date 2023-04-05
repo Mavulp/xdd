@@ -77,6 +77,10 @@ function clear() {
         </button>
       </form>
 
+      <pre>
+        {{ validation.errors }}
+      </pre>
+
       <!-- <div class="preview">
           hehe
         </div>
