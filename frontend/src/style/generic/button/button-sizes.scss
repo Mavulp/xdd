@@ -7,6 +7,12 @@
     padding: 0 20px;
   }
 
+  &.btn-large {
+    height: 42px;
+    line-height: 42px;
+    padding: 0 20px;
+  }
+
   &.btn-small {
     height: 28px;
     line-height: 28px;
@@ -18,5 +24,9 @@
     width: 35px;
     line-height: 35px;
     padding: 0;
+
+    svg {
+      font-size: 2rem;
+    }
   }
 }

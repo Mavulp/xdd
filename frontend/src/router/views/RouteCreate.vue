@@ -1,9 +1,28 @@
 <script setup lang='ts'>
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { maxLength, minLength, required, useValidation } from '@dolanske/v-valid'
 import type { PostAlias } from '../../types/PostAlias'
 import InputText from '../../components/form/InputText.vue'
 import InputTextarea from '../../components/form/InputTextarea.vue'
+import { post } from '../../js/fetch'
+import { useToast } from '../../store/toast'
+import { useLoading } from '../../store/loading'
+import { LOAD } from '../../js/definitions'
+import Spinner from '../../components/generic/Spinner.vue'
+import InputSelect from '../../components/form/InputSelect.vue'
+
+const { push } = useToast()
+const loading = useLoading()
+
+// TODO: type
+// this is all preparation for adding a type to the alias object
+const type = ref('emote')
+const typeOptions = {
+  emote: 'Emote',
+  gif: 'Gif',
+  copypasta: 'Copypasta',
+  text: 'Text',
+}
 
 const form = reactive<PostAlias>({
   name: '',
@@ -30,13 +49,27 @@ async function submit() {
 
   validation.validate()
     .then(() => {
-      // post(form.name, form.content)
+      loading.add(LOAD.CREATE)
+      post('/api/alias', {
+        name: form.name,
+        content: form.content,
+      })
+        .then(() => push({
+          type: 'success',
+          message: `Successfully added alias "${form.name}""`,
+        }))
+        .catch(({ message }) => push({
+          type: 'error',
+          message,
+        }))
+        .finally(() => loading.del(LOAD.CREATE))
     })
 }
 
 function clear() {
   form.name = ''
   form.content = ''
+
   validation.reset()
 }
 </script>
@@ -44,25 +77,14 @@ function clear() {
 <template>
   <div class="route-create">
     <div class="container small">
-      <div class="flex between title">
-        <h3>New Alias</h3>
-
-        <button
-          v-if="form.name || form.content"
-          class="button btn-icon btn-white"
-          data-title-top="Reset"
-          @click="clear()"
-        >
-          <Icon icon="ph:x" />
-        </button>
-      </div>
+      <h3>New Alias</h3>
 
       <!-- <div class="form-create"> -->
       <form class="form-create" @submit.prevent="submit">
         <InputText
           v-model="form.name"
           label="Alias Name"
-          placeholder="!funny"
+          placeholder="funny"
           :err="validation.errors.name"
         />
         <InputTextarea
@@ -72,14 +94,34 @@ function clear() {
           :err="validation.errors.content"
         />
 
-        <button class="button btn-accent">
-          Create
-        </button>
-      </form>
+        <InputSelect
+          v-model="type"
+          label="Alias type"
+          :options="typeOptions"
+        />
 
-      <pre>
-        {{ validation.errors }}
-      </pre>
+        <div class="flex right">
+          <button
+            v-if="form.content || form.name"
+            class="button btn-white"
+            @click.prevent="clear()"
+          >
+            <Icon icon="ph:x" />
+            Cancel
+          </button>
+          <button
+            class="button btn-accent btn-wider"
+            :disabled="loading.get(LOAD.CREATE)"
+            style="width:84px"
+            type="submit"
+          >
+            <Spinner v-if="loading.get(LOAD.CREATE)" />
+            <template v-else>
+              Create
+            </template>
+          </button>
+        </div>
+      </form>
 
       <!-- <div class="preview">
           hehe

@@ -3,6 +3,10 @@
     textarea {
       min-height: 128px;
     }
+
+    .flex {
+      margin-top: 40px;
+    }
   }
 
   .title {
@@ -13,6 +17,7 @@
     }
   }
 
+  .form-select .select-button,
   input,
   textarea {
     border-left-width: 3px;

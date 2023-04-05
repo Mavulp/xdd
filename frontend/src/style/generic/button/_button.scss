@@ -4,7 +4,7 @@
 .button {
   @include font(500);
   @include t();
-  @include flex(5px, center);
+  @include flex(5px, center, center);
   // border-radius: var(--radius-tn);
   height: 35px;
   line-height: 35px;
@@ -16,12 +16,13 @@
 
   svg {
     @include t();
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: var(--color-text-light);
   }
 
   &:disabled {
     pointer-events: none !important;
+    cursor: default !important;
   }
 
   // &:hover {

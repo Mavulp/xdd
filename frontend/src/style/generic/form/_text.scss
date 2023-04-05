@@ -39,22 +39,20 @@ textarea {
   &.has-input {
     textarea,
     input {
-      outline-width: 1px;
-      outline-color: var(--color-border-light);
+      border-color: var(--color-border-light);
     }
   }
 
   &.has-border {
     input,
     textarea {
-      outline-color: var(--color-border-light);
-      outline-width: 1px;
+      border-color: var(--color-border-light);
     }
 
     &.has-input {
       textarea,
       input {
-        outline-color: var(--color-border);
+        border-color: var(--color-border);
       }
     }
   }
