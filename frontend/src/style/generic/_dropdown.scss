@@ -1,5 +1,5 @@
 /*
-Generic dropdown styling, allowing you to al
+Generic dropdown styling
 */
 
 .dropdown {
@@ -36,5 +36,6 @@ Generic dropdown styling, allowing you to al
 }
 
 .dropdown-wrap {
+  display: block;
   position: relative;
 }

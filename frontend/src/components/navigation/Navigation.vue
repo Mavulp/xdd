@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-
+import Dropdown from '../generic/Dropdown.vue'
 </script>
 
 <template>
@@ -23,12 +23,26 @@
         <li><a href="/">Your Projects</a></li>
       </ul>
     </nav>
-
-    <a href="" class="user">
+    <!-- <div class="user">
       <div class="pfp">
         <strong>D</strong>
       </div>
       <span>dolanske</span>
-    </a>
+    </div> -->
+    <div class="user-wrap">
+      <Dropdown>
+        <template #button="{ trigger }">
+          <button class="user" @click="trigger">
+            <div class="pfp">
+              <strong>D</strong>
+            </div>
+            <span>dolanske</span>
+          </button>
+        </template>
+        <template #default>
+          <p>huh</p>
+        </template>
+      </Dropdown>
+    </div>
   </header>
 </template>

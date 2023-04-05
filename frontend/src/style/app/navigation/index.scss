@@ -4,6 +4,7 @@ header {
   width: 100%;
   padding: 40px;
 
+  .user,
   a:not(.disable-hover) {
     text-decoration: none;
     position: relative;
@@ -33,6 +34,7 @@ header {
 
   nav {
     justify-self: center;
+
     ul {
       @include flex(30px);
       list-style: none;
@@ -56,11 +58,16 @@ header {
     }
   }
 
+  .user-wrap {
+    @include flex($j: flex-end);
+  }
+
   .user {
     @include grid(10px, 35px 1fr);
     align-items: center;
     padding-right: 10px;
     justify-self: end;
+    cursor: pointer;
 
     .pfp {
       @include flex(0, center, center);
