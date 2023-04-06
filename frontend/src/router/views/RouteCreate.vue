@@ -10,23 +10,26 @@ import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
 import Spinner from '../../components/generic/Spinner.vue'
 import InputSelect from '../../components/form/InputSelect.vue'
+import type { AliasType } from '../../types/AliasType'
 
 const { push } = useToast()
 const loading = useLoading()
 
 // TODO: type
 // this is all preparation for adding a type to the alias object
-const type = ref('emote')
-const typeOptions = {
+const type = ref<AliasType>('emote')
+const typeOptions: Record<AliasType, string> = {
+  animatedEmote: 'Animated Emote',
   emote: 'Emote',
   gif: 'Gif',
-  copypasta: 'Copypasta',
+  image: 'Image',
   text: 'Text',
 }
 
 const form = reactive<PostAlias>({
   name: '',
   content: '',
+  type: 'emote',
 })
 
 const rules = computed(() => ({
@@ -50,10 +53,7 @@ async function submit() {
   validation.validate()
     .then(() => {
       loading.add(LOAD.CREATE)
-      post('/api/alias', {
-        name: form.name,
-        content: form.content,
-      })
+      post('/api/alias', form)
         .then(() => push({
           type: 'success',
           message: `Successfully added alias "${form.name}""`,
@@ -95,9 +95,10 @@ function clear() {
         />
 
         <InputSelect
-          v-model="type"
+          v-model="form.type"
           label="Alias type"
           :options="typeOptions"
+          cantclear
         />
 
         <div class="flex right">
@@ -122,6 +123,10 @@ function clear() {
           </button>
         </div>
       </form>
+
+      <pre>
+        {{ form }}
+      </pre>
 
       <!-- <div class="preview">
           hehe
