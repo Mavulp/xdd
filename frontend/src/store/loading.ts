@@ -1,7 +1,7 @@
 /**
  * For global state we use pinia. It allows us to access a singele point of truth for data
  * anywhere else in the app
- * 
+ *
  * I recommend checking out https://pinia.vuejs.org/core-concepts/
  */
 
@@ -15,29 +15,29 @@ interface State {
  * This simple store can be used to temporarily store an arbitrary ID.
  * In other parts of the app we can check if this ID is currently being stored here
  * and alter the UI.
- * 
+ *
  * Example:
- * 
+ *
  * ```
  * loading.add('users')
- * await fetch('/api/users)
+ * await fetch('/users)
  * loading.del('users')
  * ```
- * 
+ *
  * In the time the async function ran, the UI can display a loading bar or a spinner.
  * Anywhere in the app we can then use this
- * 
+ *
  * ```
  * const loading = useLoading()
- * 
+ *
  * // And in the UI we write
- * <Spinner v-if="loading.get('users')" 
+ * <Spinner v-if="loading.get('users')"
  * ```
  */
 
 export const useLoading = defineStore('loading', {
   state: () => ({
-    // We use set instead of an array as it stores only unique values. 
+    // We use set instead of an array as it stores only unique values.
     loading: new Set(),
   } as State),
   actions: {

@@ -53,7 +53,7 @@ async function submit() {
   validation.validate()
     .then(() => {
       loading.add(LOAD.CREATE)
-      post('/api/alias', form)
+      post('/alias', form)
         .then(() => push({
           type: 'success',
           message: `Successfully added alias "${form.name}""`,
@@ -69,7 +69,6 @@ async function submit() {
 function clear() {
   form.name = ''
   form.content = ''
-
   validation.reset()
 }
 </script>

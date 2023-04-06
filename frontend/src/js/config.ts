@@ -3,13 +3,15 @@
  */
 
 // The root api url, eg: https://api.service.com
-export const API_URL = 'https://xdd.hivecom.net'
+export const API_URL = 'https://xdd.hivecom.net/api'
 
 // Checks wether the site is viewed in a local server or not
-export const __DEV__ = Boolean(
+export const __LOCALHOST__ = Boolean(
   window.location.hostname === 'localhost'
   // [::1] is the IPv6 localhost address.
   || window.location.hostname === '[::1]'
   // 127.0.0.1/8 is considered localhost for IPv4.
   || window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/),
 )
+
+export const TOKEN_KEY = 'xdd_bearer_token'

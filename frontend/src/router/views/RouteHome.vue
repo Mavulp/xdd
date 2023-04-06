@@ -32,7 +32,7 @@ function toggleItem(item: string) {
 const data = ref<Alias[]>([])
 
 onBeforeMount(async () => {
-  data.value = await get<Alias[]>('/api/alias').catch(() => ([]))
+  data.value = await get<Alias[]>('/alias').catch(() => ([]))
 })
 
 /**

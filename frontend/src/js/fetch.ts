@@ -1,13 +1,13 @@
 import { isArray, merge } from 'lodash-es'
 import { useLoading } from '../store/loading'
-import { API_URL } from './config'
+import { API_URL, TOKEN_KEY } from './config'
 
 /**
  * This is our small wrapper library around the browser's native fetch().
  * The main functionality is to simplify making requests into a one liner of code
  *
  * ```
- * await get<ReturnType>('/api/user', { ...options })
+ * await get<ReturnType>('/user', { ...options })
  * ```
  */
 
@@ -83,8 +83,8 @@ export function upload<T = any>(url: string, body: object | string, options?: ob
 // Private handler functions
 
 async function _handleFetch<T>(url: string, options: object) {
-  // const token = localStorage.getItem('quotes_bearer_token')
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiZG9sYW5za2UiLCJpc3N1ZWRfYXQiOjE2ODA3MzQ4NzEsImdyb3VwcyI6WyJjcmVhdGUtYWxpYXNlcyIsImVkaXQtYWxpYXNlcyIsImRlbGV0ZS1hbGlhc2VzIl19.x5aXgY00VRiJxCPdPIT78baiHk9Pb1cJEvUh-pzN_Qs'
+  const token = localStorage.getItem(TOKEN_KEY)
+  // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiZG9sYW5za2UiLCJpc3N1ZWRfYXQiOjE2ODA3MzQ4NzEsImdyb3VwcyI6WyJjcmVhdGUtYWxpYXNlcyIsImVkaXQtYWxpYXNlcyIsImRlbGV0ZS1hbGlhc2VzIl19.x5aXgY00VRiJxCPdPIT78baiHk9Pb1cJEvUh-pzN_Qs'
 
   merge(options, {
     mode: 'cors',

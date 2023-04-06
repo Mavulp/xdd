@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import afterEach from './guards/afterEach'
+import beforeResolve from './guards/beforeResolve'
 
 import RouteHome from './views/RouteHome.vue'
 import RouteCreate from './views/RouteCreate.vue'
+import RouteAuthorize from './views/RouteAuthorize.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -28,6 +30,7 @@ const router = createRouter({
       // In our
       meta: {
         title: 'Alias List',
+        requiresAuth: true,
       },
     },
     {
@@ -36,6 +39,15 @@ const router = createRouter({
       component: RouteCreate,
       meta: {
         title: 'New Alias',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/authorize',
+      name: 'RouteAuthorize',
+      component: RouteAuthorize,
+      meta: {
+        title: 'You are being authorized. Wait! NO DONT CLICK ANYTHING!!',
       },
     },
   ],
@@ -43,5 +55,6 @@ const router = createRouter({
 
 // Register router guards
 router.afterEach(afterEach)
+router.beforeResolve(beforeResolve)
 
 export default router

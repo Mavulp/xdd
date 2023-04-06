@@ -3,4 +3,5 @@
  */
 export const LOAD = {
   CREATE: 'alias-create',
+  APP: 'app',
 }
