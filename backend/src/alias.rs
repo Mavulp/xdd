@@ -4,9 +4,9 @@ use idlib::{AuthorizeCookie, Has};
 
 use anyhow::Context;
 use axum::{extract::Path, Extension, Json};
-use rusqlite::{params, Connection, OptionalExtension};
+use rusqlite::{params, Connection, OptionalExtension, ToSql, Transaction};
 use serde::{Deserialize, Serialize};
-use serde_rusqlite::from_row;
+use serde_rusqlite::{from_row, to_params};
 use ts_rs::TS;
 use utoipa::ToSchema;
 
@@ -40,6 +40,10 @@ pub struct Alias {
     #[schema(example = "https://example.com/funny.png")]
     pub content: String,
 
+    /// A category describing the type of content in the alias.
+    #[serde(rename = "type")]
+    pub typ: AliasType,
+
     /// The username of the account who first created the alias.
     #[schema(example = "Alice")]
     pub author: String,
@@ -49,10 +53,12 @@ pub struct Alias {
     pub created_at: u64,
 }
 
-#[derive(Deserialize, Debug, PartialEq)]
+#[derive(Deserialize, Debug)]
 struct DbAlias {
     name: String,
     content: String,
+    #[serde(rename = "type")]
+    typ: AliasType,
     author: String,
     created_at: u64,
 }
@@ -62,6 +68,7 @@ impl From<DbAlias> for Alias {
         Self {
             name: alias.name,
             content: alias.content,
+            typ: alias.typ,
             author: alias.author,
             created_at: alias.created_at,
         }
@@ -95,11 +102,14 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Alias>, Error> {
     let mut stmt = conn
         .prepare(
             "SELECT
-                name,
-                content,
-                author,
-                created_at
-            FROM aliases",
+                a.name,
+                a.content,
+                at.name as type,
+                a.author,
+                a.created_at
+            FROM aliases a
+            JOIN alias_types at ON at.id = a.type
+            ",
         )
         .context("Failed to prepare statement for alias query")?;
 
@@ -146,11 +156,13 @@ pub fn get_by_name(conn: &Connection, name: String) -> Result<Alias, Error> {
     let content = conn
         .query_row(
             "SELECT
-                name,
-                content,
-                author,
-                created_at
-            FROM aliases
+                a.name,
+                a.content,
+                at.name as type,
+                a.author,
+                a.created_at
+            FROM aliases a
+            JOIN alias_types at ON at.id = a.type
             WHERE name = $1",
             params![name],
             |row| Ok(Alias::from(from_row::<DbAlias>(row).unwrap())),
@@ -173,6 +185,21 @@ pub struct PostAlias {
     /// The content of the alias which is to be used as the replacement.
     #[schema(example = "https://example.com/funny.png")]
     pub content: String,
+
+    /// A category describing the type of content in the alias.
+    #[serde(rename = "type")]
+    pub typ: AliasType,
+}
+
+#[derive(Debug, Serialize, Deserialize, TS, ToSchema)]
+#[ts(export, export_to = "../frontend/src/types/")]
+#[serde(rename_all = "camelCase")]
+pub enum AliasType {
+    Text,
+    Image,
+    Gif,
+    Emote,
+    AnimatedEmote,
 }
 
 type HasCreateAliases = Has<"create-aliases">;
@@ -212,14 +239,29 @@ pub async fn post_alias(
             state
                 .db
                 .call(move |conn| {
-                    conn.execute(
+                    let tx = conn.transaction().context("Failed to create transaction")?;
+                    let type_id = tx
+                        .query_row(
+                            "SELECT id
+                            FROM alias_types
+                            WHERE name = $1",
+                            to_params(&request.typ).unwrap(),
+                            |row| Ok(from_row::<i64>(row).unwrap()),
+                        )
+                        .context("Failed to get alias type")?;
+
+                    tx.execute(
                         &format!(
-                            "INSERT INTO aliases (name, content, author, created_at)
+                            "INSERT INTO aliases (name, content, type, author, created_at)
                             VALUES ($1, $2, $3, $4)"
                         ),
-                        params![&request.name, &request.content, &payload.name, now],
+                        params![&request.name, &request.content, type_id, &payload.name, now],
                     )
-                    .optional()
+                    .context("Failed to insert alias")?;
+
+                    tx.commit().context("Failed to commit transaction")?;
+
+                    Ok::<_, Error>(())
                 })
                 .await
                 .context("Failed to insert alias")?;
@@ -243,6 +285,12 @@ pub struct PutAlias {
     #[schema(example = "https://example.com/funny.png")]
     #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub content: Option<String>,
+
+    /// A category describing the type of content in the alias.
+    /// # Note
+    /// The input is trimmed and empty inputs are not updated.
+    #[serde(rename = "type")]
+    pub typ: Option<AliasType>,
 }
 
 /// Update alias for the specified alias name.
@@ -291,22 +339,72 @@ pub async fn put_alias_by_name(
                 return Err(Error::NotFound);
             }
 
-            state
-                .db
-                .call(move |conn| {
-                    conn.query_row(
-                        &format!("UPDATE aliases SET content = ? WHERE name = ?"),
-                        params![request.content, name],
-                        |_| Ok(()),
-                    )
-                    .optional()
-                })
-                .await
-                .context("Failed to update alias fields")?;
+            let update_str = request.update_str();
+            if !update_str.is_empty() {
+                state
+                    .db
+                    .call(move |conn| {
+                        let tx = conn.transaction().context("Failed to create transaction")?;
+                        let mut params = request.update_params(&tx)?;
+                        params.push(Box::new(name));
+                        tx.query_row(
+                            &format!("UPDATE aliases SET {update_str} WHERE name = ?"),
+                            rusqlite::params_from_iter(params.iter()),
+                            |_| Ok(()),
+                        )
+                        .context("Failed to update alias")?;
+
+                        tx.commit().context("Failed to commit transaction")?;
+
+                        Ok::<_, Error>(())
+                    })
+                    .await
+                    .context("Failed to update alias fields")?;
+            }
 
             Ok::<_, Error>(())
         })
         .await
+}
+
+impl PutAlias {
+    fn update_str(&self) -> String {
+        let mut result = Vec::new();
+
+        if self.content.is_some() {
+            result.push("content = ?")
+        }
+
+        if self.typ.is_some() {
+            result.push("type = ?")
+        }
+
+        result.join(", ")
+    }
+
+    fn update_params(mut self, tx: &Transaction) -> Result<Vec<Box<dyn ToSql>>, Error> {
+        let mut params: Vec<Box<dyn ToSql>> = Vec::new();
+
+        if let Some(content) = self.content.take() {
+            params.push(Box::new(content))
+        }
+
+        if let Some(typ) = self.typ.take() {
+            let type_id = tx
+                .query_row(
+                    "SELECT id
+                    FROM alias_types
+                    WHERE name = $1",
+                    to_params(&typ).unwrap(),
+                    |row| Ok(from_row::<i64>(row).unwrap()),
+                )
+                .context("Failed to get alias type")?;
+
+            params.push(Box::new(type_id))
+        }
+
+        Ok(params)
+    }
 }
 
 type HasDeleteAliases = Has<"delete-aliases">;

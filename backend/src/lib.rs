@@ -51,6 +51,7 @@ pub struct AppState {
         alias::Alias,
         alias::PostAlias,
         alias::PutAlias,
+        alias::AliasType,
         account::Settings,
         account::PutSettings
     )),
