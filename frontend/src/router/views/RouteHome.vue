@@ -1,10 +1,13 @@
 <script setup lang='ts'>
 import { computed, onBeforeMount, ref } from 'vue'
 import { categoryLabels, useEmotes } from '../../store/emotes'
-import Spinner from '../../components/generic/Spinner.vue'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
 import { searchInStr } from '../../js/utils'
+
+import Spinner from '../../components/generic/Spinner.vue'
+import AliasNormal from '../../components/alias/AliasNormal.vue'
+import AliasInline from '../../components/alias/AliasInline.vue'
 
 /**
  * This is the wrapper component around each 'page'.
@@ -111,20 +114,13 @@ const filteredAliases = computed(() => {
         </div>
       </template>
 
-      <div v-else class="list">
-        <button
-          v-for="item in filteredAliases"
-          :key="item.name"
-          class="list-item"
-        >
-          <div class="thumbnail">
-            <img :src="item.content" alt="">
-          </div>
-
-          <div class="name">
-            <span>{{ item.name }}</span>
-          </div>
-        </button>
+      <div v-else class="list" :class="{ 'large-icons': displayType === 'large-icon' }">
+        <template v-if="displayType !== 'list'">
+          <AliasNormal v-for="item in filteredAliases" :key="item.name" :data="item" />
+        </template>
+        <template v-else>
+          <AliasInline v-for="item in filteredAliases" :key="item.name" :data="item" />
+        </template>
       </div>
     </div>
   </div>

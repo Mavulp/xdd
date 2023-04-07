@@ -25,6 +25,7 @@ export const useEmotes = defineStore('emotes', () => {
     group.push(type)
     return group
   }, [] as AliasType[]))
+  const active = ref<string>()
 
   async function addAlias(form: PostAlias) {
     const { add, del } = useLoading()
@@ -59,5 +60,6 @@ export const useEmotes = defineStore('emotes', () => {
     categories,
     addAlias,
     fetch,
+    active,
   }
 })
