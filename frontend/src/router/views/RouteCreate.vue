@@ -1,30 +1,17 @@
 <script setup lang='ts'>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { maxLength, minLength, required, useValidation } from '@dolanske/v-valid'
 import type { PostAlias } from '../../types/PostAlias'
 import InputText from '../../components/form/InputText.vue'
 import InputTextarea from '../../components/form/InputTextarea.vue'
-import { post } from '../../js/fetch'
-import { useToast } from '../../store/toast'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
 import Spinner from '../../components/generic/Spinner.vue'
 import InputSelect from '../../components/form/InputSelect.vue'
-import type { AliasType } from '../../types/AliasType'
+import { categoryLabels, useEmotes } from '../../store/emotes'
 
-const { push } = useToast()
 const loading = useLoading()
-
-// TODO: type
-// this is all preparation for adding a type to the alias object
-const type = ref<AliasType>('emote')
-const typeOptions: Record<AliasType, string> = {
-  animatedEmote: 'Animated Emote',
-  emote: 'Emote',
-  gif: 'Gif',
-  image: 'Image',
-  text: 'Text',
-}
+const emotes = useEmotes()
 
 const form = reactive<PostAlias>({
   name: '',
@@ -49,20 +36,9 @@ const validation = useValidation(form, rules, { autoclear: true })
 
 async function submit() {
   validation.reset()
-
   validation.validate()
     .then(() => {
-      loading.add(LOAD.CREATE)
-      post('/alias', form)
-        .then(() => push({
-          type: 'success',
-          message: `Successfully added alias "${form.name}""`,
-        }))
-        .catch(({ message }) => push({
-          type: 'error',
-          message,
-        }))
-        .finally(() => loading.del(LOAD.CREATE))
+      emotes.addAlias(form)
     })
 }
 
@@ -96,7 +72,7 @@ function clear() {
         <InputSelect
           v-model="form.type"
           label="Alias type"
-          :options="typeOptions"
+          :options="categoryLabels"
           cantclear
         />
 
@@ -122,16 +98,6 @@ function clear() {
           </button>
         </div>
       </form>
-
-      <pre>
-        {{ form }}
-      </pre>
-
-      <!-- <div class="preview">
-          hehe
-        </div>
-      </div> -->
     </div>
-    <div class="container-mid" />
   </div>
 </template>

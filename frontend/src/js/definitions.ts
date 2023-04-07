@@ -3,5 +3,6 @@
  */
 export const LOAD = {
   CREATE: 'alias-create',
+  FETCH: 'alias-fetch',
   APP: 'app',
-}
+} as const

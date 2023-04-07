@@ -1,7 +1,10 @@
 <script setup lang='ts'>
-import { onBeforeMount, ref } from 'vue'
-import { get } from '../../js/fetch'
-import type { Alias } from '../../types/Alias'
+import { computed, onBeforeMount, ref } from 'vue'
+import { categoryLabels, useEmotes } from '../../store/emotes'
+import Spinner from '../../components/generic/Spinner.vue'
+import { useLoading } from '../../store/loading'
+import { LOAD } from '../../js/definitions'
+import { searchInStr } from '../../js/utils'
 
 /**
  * This is the wrapper component around each 'page'.
@@ -10,13 +13,14 @@ import type { Alias } from '../../types/Alias'
  * Not much logic is usually done here, except fetching data and/or displaying loading states etc
  */
 
+const loading = useLoading()
+const emotes = useEmotes()
+
 type DisplayTypes = 'small-icon' | 'large-icon' | 'list'
 
 const search = ref('')
 const displayType = ref<DisplayTypes>('small-icon')
 const filter = ref(new Set())
-
-const types = ['Text', 'Emotes', 'Photos', 'Gifs']
 
 function toggleItem(item: string) {
   if (filter.value.has(item))
@@ -25,19 +29,20 @@ function toggleItem(item: string) {
     filter.value.add(item)
 }
 
-/**
- * List
- */
-
-const data = ref<Alias[]>([])
-
 onBeforeMount(async () => {
-  data.value = await get<Alias[]>('/alias').catch(() => ([]))
+  emotes.fetch()
 })
 
-/**
- * This is testing data for list
- */
+const filteredAliases = computed(() => {
+  let data = emotes.aliases
+  if (search.value)
+    data = data.filter(item => searchInStr([item.author, item.name], search.value))
+
+  if (filter.value.size > 0)
+    data = data.filter(item => filter.value.has(item.type))
+
+  return data
+})
 </script>
 
 <template>
@@ -46,7 +51,7 @@ onBeforeMount(async () => {
       <div class="list-search">
         <div class="input-wrap" :class="{ 'has-input': search }">
           <div class="icon">
-            <Icon icon="ph:magnifying-glass-bold" />
+            <Icon icon="mdi:magnify" />
           </div>
           <input v-model="search" type="text" placeholder="Search for alias">
         </div>
@@ -54,13 +59,13 @@ onBeforeMount(async () => {
         <div class="list-controls">
           <div class="list-types">
             <button
-              v-for="item in types"
+              v-for="item in emotes.categories"
               :key="item"
               class="button"
               :class="[filter.has(item) ? 'btn-accent' : 'btn-white']"
               @click="toggleItem(item)"
             >
-              {{ item }}
+              {{ categoryLabels[item] }}
             </button>
           </div>
 
@@ -71,7 +76,7 @@ onBeforeMount(async () => {
               :class="[displayType === 'small-icon' ? 'btn-accent' : 'btn-white']"
               @click="displayType = 'small-icon'"
             >
-              <Icon icon="ph:dots-nine-bold" />
+              <Icon icon="mdi:dots-grid" />
             </button>
             <button
               class="button btn-icon"
@@ -87,13 +92,17 @@ onBeforeMount(async () => {
               :class="[displayType === 'list' ? 'btn-accent' : 'btn-white']"
               @click="displayType = 'list'"
             >
-              <Icon icon="ph:list-bullets" />
+              <Icon icon="mdi:format-list-bulleted-square" />
             </button>
           </div>
         </div>
       </div>
 
-      <template v-if="data.length === 0">
+      <div v-if="loading.get(LOAD.FETCH)">
+        <Spinner />
+      </div>
+
+      <template v-else-if="emotes.aliases.length === 0">
         <div class="list-empty">
           <p>There are no aliases right now.</p>
           <router-link :to="{ name: 'RouteCreate' }" class="button btn-gray">
@@ -104,7 +113,7 @@ onBeforeMount(async () => {
 
       <div v-else class="list">
         <button
-          v-for="item in data"
+          v-for="item in filteredAliases"
           :key="item.name"
           class="list-item"
         >
