@@ -1,6 +1,12 @@
 .list.large-icons .alias-item {
-  .thumbnail p {
-    font-size: 1.5rem;
+  .thumbnail {
+    img {
+      min-width: 64px;
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
   }
 }
 
@@ -26,6 +32,7 @@
     background-color: var(--color-accent-bg);
   }
 
+  &.alias-active,
   &:hover {
     &:after {
       height: calc(100% + var(--hover-offset));

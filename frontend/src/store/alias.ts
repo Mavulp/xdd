@@ -16,9 +16,9 @@ export const categoryLabels: Record<AliasType, string> = {
   text: 'Text',
 }
 
-export const useEmotes = defineStore('emotes', () => {
-  const aliases = ref<Alias[]>([])
-  const categories = computed(() => aliases.value.reduce((group, item) => {
+export const useAlias = defineStore('alias', () => {
+  const list = ref<Alias[]>([])
+  const categories = computed(() => list.value.reduce((group, item) => {
     const type = item.type
     if (group.includes(type))
       return group
@@ -26,8 +26,9 @@ export const useEmotes = defineStore('emotes', () => {
     return group
   }, [] as AliasType[]))
   const active = ref<string>()
+  const activeAlias = computed(() => list.value.find(a => a.name === active.value))
 
-  async function addAlias(form: PostAlias) {
+  async function add(form: PostAlias) {
     const { add, del } = useLoading()
     const { push } = useToast()
     add(LOAD.CREATE)
@@ -39,7 +40,7 @@ export const useEmotes = defineStore('emotes', () => {
           message: `Successfully added alias "${form.name}""`,
         })
 
-        aliases.value.push(newAlias)
+        list.value.push(newAlias)
       })
       .catch(({ message }) => push({
         type: 'error',
@@ -51,15 +52,16 @@ export const useEmotes = defineStore('emotes', () => {
   async function fetch() {
     const { add, del } = useLoading()
     add(LOAD.FETCH)
-    aliases.value = await get<Alias[]>('/alias').catch(() => [])
+    list.value = await get<Alias[]>('/alias').catch(() => [])
     del(LOAD.FETCH)
   }
 
   return {
-    aliases,
+    list,
     categories,
-    addAlias,
+    add,
     fetch,
     active,
+    activeAlias,
   }
 })

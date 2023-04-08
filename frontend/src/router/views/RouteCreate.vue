@@ -8,10 +8,10 @@ import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
 import Spinner from '../../components/generic/Spinner.vue'
 import InputSelect from '../../components/form/InputSelect.vue'
-import { categoryLabels, useEmotes } from '../../store/emotes'
+import { categoryLabels, useAlias } from '../../store/alias'
 
 const loading = useLoading()
-const emotes = useEmotes()
+const alias = useAlias()
 
 const form = reactive<PostAlias>({
   name: '',
@@ -38,7 +38,7 @@ async function submit() {
   validation.reset()
   validation.validate()
     .then(() => {
-      emotes.addAlias(form)
+      alias.add(form)
     })
 }
 

@@ -1,5 +1,8 @@
 <script setup lang='ts'>
+import { useUser } from '../../store/user'
 import Dropdown from '../generic/Dropdown.vue'
+
+const user = useUser()
 </script>
 
 <template>
@@ -20,7 +23,7 @@ import Dropdown from '../generic/Dropdown.vue'
             Create
           </RouterLink>
         </li>
-        <li><a href="/">Your Projects</a></li>
+        <!-- <li><a href="/">Your Projects</a></li> -->
       </ul>
     </nav>
     <!-- <div class="user">
@@ -34,9 +37,9 @@ import Dropdown from '../generic/Dropdown.vue'
         <template #button="{ trigger }">
           <button class="user" @click="trigger">
             <div class="pfp">
-              <strong>D</strong>
+              <strong>{{ user.username.at(0) }}</strong>
             </div>
-            <span>dolanske</span>
+            <span>{{ user.username }}</span>
           </button>
         </template>
         <template #default>

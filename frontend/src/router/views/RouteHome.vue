@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, onBeforeMount, ref } from 'vue'
-import { categoryLabels, useEmotes } from '../../store/emotes'
+import { categoryLabels, useAlias } from '../../store/alias'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
 import { searchInStr } from '../../js/utils'
@@ -8,6 +8,7 @@ import { searchInStr } from '../../js/utils'
 import Spinner from '../../components/generic/Spinner.vue'
 import AliasNormal from '../../components/alias/AliasNormal.vue'
 import AliasInline from '../../components/alias/AliasInline.vue'
+import AliasModal from '../../components/alias/AliasModal.vue'
 
 /**
  * This is the wrapper component around each 'page'.
@@ -17,7 +18,7 @@ import AliasInline from '../../components/alias/AliasInline.vue'
  */
 
 const loading = useLoading()
-const emotes = useEmotes()
+const alias = useAlias()
 
 type DisplayTypes = 'small-icon' | 'large-icon' | 'list'
 
@@ -33,11 +34,11 @@ function toggleItem(item: string) {
 }
 
 onBeforeMount(async () => {
-  emotes.fetch()
+  alias.fetch()
 })
 
 const filteredAliases = computed(() => {
-  let data = emotes.aliases
+  let data = alias.list
   if (search.value)
     data = data.filter(item => searchInStr([item.author, item.name], search.value))
 
@@ -56,13 +57,17 @@ const filteredAliases = computed(() => {
           <div class="icon">
             <Icon icon="mdi:magnify" />
           </div>
-          <input v-model="search" type="text" placeholder="Search for alias">
+          <input
+            v-model="search"
+            type="text"
+            :placeholder="`Search through ${alias.list.length} aliases...`"
+          >
         </div>
 
         <div class="list-controls">
           <div class="list-types">
             <button
-              v-for="item in emotes.categories"
+              v-for="item in alias.categories"
               :key="item"
               class="button"
               :class="[filter.has(item) ? 'btn-accent' : 'btn-white']"
@@ -105,7 +110,7 @@ const filteredAliases = computed(() => {
         <Spinner />
       </div>
 
-      <template v-else-if="emotes.aliases.length === 0">
+      <template v-else-if="alias.list.length === 0">
         <div class="list-empty">
           <p>There are no aliases right now.</p>
           <router-link :to="{ name: 'RouteCreate' }" class="button btn-gray">
@@ -123,5 +128,7 @@ const filteredAliases = computed(() => {
         </template>
       </div>
     </div>
+
+    <AliasModal />
   </div>
 </template>
