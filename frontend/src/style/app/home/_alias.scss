@@ -30,13 +30,17 @@
     left: calc(var(--hover-offset) * -1);
     right: calc(var(--hover-offset) * -1);
     height: 0;
-    background-color: var(--color-accent-bg);
+    background-color: var(--color-bg-light);
   }
 
   &.alias-active,
   &:hover {
     &:after {
       height: calc(100% + var(--hover-offset));
+    }
+
+    .name span {
+      color: var(--color-accent);
     }
   }
 

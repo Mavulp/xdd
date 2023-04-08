@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 // This is the pop-up component which displays information about an alias and is
 // visible as long as a component is clicked on
-import { useDateFormat } from '@vueuse/shared'
 import { computed, nextTick, ref, watch } from 'vue'
 import { onKeyDown, useClipboard } from '@vueuse/core'
 import { categoryLabels, useAlias } from '../../store/alias'
@@ -9,13 +8,27 @@ import { useToast } from '../../store/toast'
 import Spinner from '../generic/Spinner.vue'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
+import { useUser } from '../../store/user'
 
 const loading = useLoading()
 const alias = useAlias()
+const user = useUser()
 const { push } = useToast()
 const active = computed(() => alias.activeAlias)
 
-const date = useDateFormat(Number(active.value?.createdAt ? Number(active.value.createdAt) * 1000 : 0), 'D MMMM YYYY')
+// const date = useDateFormat(Number(active.value?.createdAt ? Number(active.value.createdAt) * 1000 : 0), 'D MMMM YYYY')
+const date = computed(() => {
+  if (!active.value)
+    return null
+
+  const d = new Date(Number(active.value.createdAt) * 1000)
+
+  return new Intl.DateTimeFormat('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  }).format(d)
+})
 
 const { copy } = useClipboard()
 
@@ -97,12 +110,12 @@ onKeyDown('Escape', close)
           <p>Added {{ date }}</p>
           <div class="spacer" />
           <p>By {{ active.author }}</p>
-          <div class="spacer" />
+          <div v-if="user.can(['edit-aliases', 'delete-aliases'])" class="spacer" />
 
-          <!-- <button>
+          <button v-if="user.can('edit-aliases')">
             Edit
-          </button> -->
-          <button @click="alias.remove(active?.name ?? '')">
+          </button>
+          <button v-if="user.can('delete-aliases')" @click="alias.remove(active?.name ?? '')">
             <Spinner v-if="loading.get(LOAD.DELETE)" />
             Delete
           </button>

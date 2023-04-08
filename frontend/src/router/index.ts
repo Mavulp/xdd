@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { useUser } from '../store/user'
 import afterEach from './guards/afterEach'
 import beforeResolve from './guards/beforeResolve'
 
@@ -13,8 +14,8 @@ const router = createRouter({
     {
       // Special route used as a catch-all.
       path: '/:pathMatch(.*)*',
-      // In case user wants to access a path which is not defined,
-      // they will be redirected to the following route
+      // In case user wants to access a path which is not defined, they will be
+      // redirected to the following route
       redirect: {
         name: 'RouteHome',
       },
@@ -22,12 +23,11 @@ const router = createRouter({
     {
       // The path to the the page
       path: '/home',
-      // Name is used for matching routes. Allowing you to change url
-      // to the page without having to update all the
+      // Name is used for matching routes. Allowing you to change url to the
+      // page without having to update all the
       name: 'RouteHome',
       component: RouteHome,
-      // The meta object contains whatever properties you want
-      // In our
+      // The meta object contains whatever properties you want In our
       meta: {
         title: 'Alias List',
         requiresAuth: true,
@@ -40,6 +40,12 @@ const router = createRouter({
       meta: {
         title: 'New Alias',
         requiresAuth: true,
+      },
+      // Disable entry to the route if user does not have the necessary
+      // permissions
+      beforeEnter() {
+        const user = useUser()
+        return user.can('create-aliases')
       },
     },
     {

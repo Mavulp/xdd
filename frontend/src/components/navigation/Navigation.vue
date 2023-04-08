@@ -18,7 +18,7 @@ const user = useUser()
             Aliases
           </RouterLink>
         </li>
-        <li>
+        <li v-if="user.can('create-aliases')">
           <RouterLink :to="{ name: 'RouteCreate' }">
             Create
           </RouterLink>

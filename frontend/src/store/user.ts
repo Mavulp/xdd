@@ -8,7 +8,15 @@ export const useUser = defineStore('user', () => {
   const isSignedIn = ref(!isNil(localStorage.getItem(TOKEN_KEY)))
   const permissions = ref<string[]>([])
 
+  // Check wether user object includes the provided permission(s)
+  function can(allowed: string[] | string) {
+    if (typeof allowed === 'string')
+      allowed = [allowed]
+    return allowed.some(item => permissions.value.includes(item))
+  }
+
   return {
+    can,
     username,
     isSignedIn,
     permissions,
