@@ -1,9 +1,9 @@
 # To do
 
 - [] Clicking emote shows it's detail
-  - [] Contains the full copy pasta / large image etc
-  - [] Information about it (big name, who added it)
-  - [] Big copy button somewhere
+  - [x] Contains the full copy pasta / large image etc
+  - [x] Information about it (big name, who added it)
+  - [x] Big copy button somewhere
   - [] Edit / delete buttons
 - [] Implement display types
   - [x] Large Icons
@@ -13,6 +13,7 @@
   - [] Log-out button, redirects to a logout page (deletes cookie / local
     storage auth) and logout page will have a "login-in" button that just
     redirects to Routehome because authentication is forced automatically
+- [] Update logo colors
 
 ## Done
 

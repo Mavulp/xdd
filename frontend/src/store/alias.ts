@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import type { Alias } from '../types/Alias'
 import type { PostAlias } from '../types/PostAlias'
 import { LOAD } from '../js/definitions'
-import { get, post } from '../js/fetch'
+import { del, get, post } from '../js/fetch'
 import type { AliasType } from '../types/AliasType'
 import { useLoading } from './loading'
 import { useToast } from './toast'
@@ -25,6 +25,8 @@ export const useAlias = defineStore('alias', () => {
     group.push(type)
     return group
   }, [] as AliasType[]))
+
+  // Active alias showing up in modal
   const active = ref<string>()
   const activeAlias = computed(() => list.value.find(a => a.name === active.value))
 
@@ -37,7 +39,7 @@ export const useAlias = defineStore('alias', () => {
       .then((newAlias) => {
         push({
           type: 'success',
-          message: `Successfully added alias "${form.name}""`,
+          message: `Successfully added alias "${form.name}"`,
         })
 
         list.value.push(newAlias)
@@ -47,6 +49,26 @@ export const useAlias = defineStore('alias', () => {
         message,
       }))
       .finally(() => del(LOAD.CREATE))
+  }
+
+  function remove(name: Alias['name']) {
+    const { add, del: _del } = useLoading()
+    const { push } = useToast()
+    add(LOAD.DELETE)
+    del(`/alias/${name}`)
+      .then(() => {
+        push({
+          type: 'success',
+          message: `Successfully removed alias "${name}"`,
+        })
+
+        list.value = list.value.filter(l => l.name !== name)
+      })
+      .catch(({ message }) => push({
+        type: 'error',
+        message,
+      }))
+      .finally(() => _del(LOAD.DELETE))
   }
 
   async function fetch() {
@@ -60,6 +82,7 @@ export const useAlias = defineStore('alias', () => {
     list,
     categories,
     add,
+    remove,
     fetch,
     active,
     activeAlias,

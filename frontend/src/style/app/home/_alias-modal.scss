@@ -33,12 +33,14 @@
   }
 
   .modal-wrapper {
-    @include grid(40px, 256px 1fr);
+    @include flex(40px);
+    // @include grid(40px, 256px 1fr);
     padding: 20px;
 
     .content {
       @include flex(0, center, center);
-      width: 256px;
+      max-width: 324px;
+      min-width: 64px;
 
       img {
         border-radius: var(--radius-lg);
@@ -58,45 +60,40 @@
     }
 
     .info {
-      // padding: 20px 0;
       align-self: end;
+      flex: 1;
+
+      &.show-padding {
+        padding-bottom: 40px;
+
+        .name strong {
+          font-size: 4.4rem;
+        }
+      }
 
       .category {
-        @include font(500);
+        @include font(700);
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         text-transform: uppercase;
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         color: var(--color-text-lighter);
       }
 
       .name {
-        @include flex(0);
-        @include font(700);
+        @include flex(10px);
         width: 100%;
-        // font-size: 6rem;
-        font-size: 3vw;
         text-transform: uppercase;
         color: var(--color-text);
         margin-bottom: 20px;
         position: relative;
         padding: 0;
-        // margin-bottom: 20px;
         z-index: 5;
-        // border-bottom: 1px solid var(--color-border);
 
-        &:after {
-          @include t();
-          content: "";
-          border-radius: var(--radius-sm);
-          display: block;
-          z-index: -1;
-          position: absolute;
-          bottom: -5px;
-          left: -10px;
-          right: -10px;
-          height: 0;
-          background-color: var(--color-bg);
+        strong {
+          @include font(700);
+          margin-right: 40px;
+          font-size: 3.6rem;
         }
 
         &.alias-active,
@@ -114,13 +111,37 @@
 
         svg {
           font-size: 2rem;
-          color: var(--color-text-light);
+          color: var(--color-accent);
         }
       }
 
       .meta {
+        @include flex(10px);
         font-size: 1.2rem;
         color: var(--color-text-light);
+
+        .spacer {
+          border-radius: 100%;
+          width: 6px;
+          height: 6px;
+          background-color: var(--color-border);
+        }
+
+        button,
+        p {
+          @include font(400);
+          font-size: 1.2rem;
+          color: var(--color-text-lighter);
+        }
+
+        button {
+          color: var(--color-text-light);
+          &:hover {
+            text-decoration-line: underline;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--color-text-lighter);
+          }
+        }
       }
     }
   }

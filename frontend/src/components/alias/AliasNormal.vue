@@ -4,6 +4,10 @@ import type { Alias } from '../../types/Alias'
 
 const props = defineProps<{ data: Alias }>()
 const alias = useAlias()
+
+// function openMenu(e: Event) {
+//   e.preventDefault()
+// }
 </script>
 
 <template>
@@ -17,7 +21,7 @@ const alias = useAlias()
       <img
         v-if="props.data.type !== 'text'"
         :src="props.data.content"
-        :alt="`!${props.data.name}`"
+        alt=" "
       >
       <p v-else :title="props.data.content">
         {{ props.data.content }}

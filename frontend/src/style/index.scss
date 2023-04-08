@@ -34,6 +34,21 @@ html {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
+
+  // Global error icon for when image can not load
+  img {
+    text-align: center;
+    &:before {
+      content: "";
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background-image: url("icons/missing.svg");
+      background-size: 32px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
 }
 
 @import "./app/";

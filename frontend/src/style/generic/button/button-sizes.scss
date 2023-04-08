@@ -25,6 +25,15 @@
     line-height: 35px;
     padding: 0;
 
+    &.btn-large {
+      width: 42px;
+      line-height: 42px;
+
+      svg {
+        font-size: 3rem;
+      }
+    }
+
     svg {
       font-size: 2rem;
     }

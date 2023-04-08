@@ -2,6 +2,7 @@
   .thumbnail {
     img {
       min-width: 64px;
+      // object-position: center;
     }
 
     p {
@@ -21,7 +22,7 @@
   &:after {
     @include t();
     content: "";
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-lg);
     display: block;
     z-index: -1;
     position: absolute;
@@ -49,7 +50,7 @@
     overflow: hidden;
 
     img {
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-sm);
       display: block;
       max-width: 100%;
       max-height: 100%;
@@ -65,7 +66,7 @@
     }
 
     p {
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-sm);
       display: -webkit-box;
       -webkit-line-clamp: var(--alias-line);
       -webkit-box-orient: vertical;

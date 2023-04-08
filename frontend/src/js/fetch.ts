@@ -84,7 +84,6 @@ export function upload<T = any>(url: string, body: object | string, options?: ob
 
 async function _handleFetch<T>(url: string, options: object) {
   const token = localStorage.getItem(TOKEN_KEY)
-  // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiZG9sYW5za2UiLCJpc3N1ZWRfYXQiOjE2ODA3MzQ4NzEsImdyb3VwcyI6WyJjcmVhdGUtYWxpYXNlcyIsImVkaXQtYWxpYXNlcyIsImRlbGV0ZS1hbGlhc2VzIl19.x5aXgY00VRiJxCPdPIT78baiHk9Pb1cJEvUh-pzN_Qs'
 
   merge(options, {
     mode: 'cors',

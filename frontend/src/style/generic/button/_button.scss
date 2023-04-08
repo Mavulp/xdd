@@ -13,6 +13,7 @@
   color: var(--color-text-light);
   text-decoration: none;
   text-transform: uppercase;
+  position: relative;
 
   svg {
     @include t();
@@ -24,9 +25,4 @@
     pointer-events: none !important;
     cursor: default !important;
   }
-
-  // &:hover {
-  //   color: var(--color-text);
-  //   background-color: var(--color-bg-light);
-  // }
 }
