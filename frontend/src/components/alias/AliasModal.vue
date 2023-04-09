@@ -97,11 +97,11 @@ function goToEdit() {
 <template>
   <div class="alias-modal" :class="{ 'modal-active': alias.activeAlias }">
     <button class="button btn-icon btn-white btn-close" @click="close()">
-      <Icon icon="mdi:close-thick" />
+      <Icon icon="mdi:close" />
     </button>
     <div v-if="active" class="modal-wrapper">
       <div ref="contentEl" class="content">
-        <div v-if="active.type !== 'text'" class="thumbnail">
+        <div v-if="active.type !== 'text'" class="thumbnail" :class="{ 'is-emote': active.type === 'emote' || active.type === 'animatedEmote' }">
           <img :src="active.content" alt=" ">
         </div>
         <div v-else class="text">

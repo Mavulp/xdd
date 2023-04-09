@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, onBeforeMount, ref } from 'vue'
-import { useOffsetPagination } from '@vueuse/core'
+import { useOffsetPagination, useWindowScroll } from '@vueuse/core'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
@@ -69,6 +69,13 @@ const aliasesToRender = computed(() => {
   const end = start + paginationSize - 1
   return filteredAliases.value.slice(start, end)
 })
+
+// Display button up if user has scrolled
+const { y } = useWindowScroll()
+
+function goUp() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 </script>
 
 <template>
@@ -170,6 +177,12 @@ const aliasesToRender = computed(() => {
           <AliasInline v-for="item in aliasesToRender" :key="item.name" :data="item" />
         </template>
       </div>
+
+      <Transition name="fade" appear>
+        <button v-if="y > 250" class="button btn-white btn-icon btn-go-up" @click="goUp()">
+          <Icon icon="mdi:arrow-up" />
+        </button>
+      </Transition>
     </div>
 
     <AliasModal />

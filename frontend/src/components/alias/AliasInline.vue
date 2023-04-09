@@ -32,6 +32,7 @@ function copyContent() {
   <button
     :key="props.data.name"
     class="alias-item alias-inline"
+    :class="{ 'alias-active': props.data.name === alias.active }"
     @click.self="alias.$patch({ active: props.data.name })"
   >
     <div class="thumbnail">

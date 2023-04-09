@@ -8,7 +8,7 @@
   width: 75vw;
   // --color-bg-light
   background-color: rgba(#191919, 0.8);
-  backdrop-filter: blur(40px);
+  backdrop-filter: blur(20px);
   box-shadow: var(--shadow);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -40,6 +40,14 @@
       @include flex(0, center, center);
       max-width: 324px;
       min-width: 64px;
+
+      .thumbnail {
+        &.is-emote {
+          img {
+            border-radius: 0;
+          }
+        }
+      }
 
       img {
         border-radius: var(--radius-lg);
