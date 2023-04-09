@@ -4,12 +4,15 @@
 // style into a single file, if it does not become bloated or confusing :)
 .list-search {
   display: block;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   position: sticky;
   top: 0;
-  padding-top: 20px;
   z-index: 5;
-  background-color: var(--color-bg);
+  margin: 0 -128px;
+  padding: 20px 128px;
+  // --color-bg
+  background-color: rgba(#111111, 0.8);
+  backdrop-filter: blur(40px);
 
   .input-wrap {
     position: relative;
