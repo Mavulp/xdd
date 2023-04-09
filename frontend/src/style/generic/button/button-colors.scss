@@ -9,6 +9,7 @@
     left: 0;
     right: 0;
     height: 0;
+    z-index: -1;
   }
 
   &:hover {
@@ -20,7 +21,9 @@
   &.btn-white {
     &:focus-visible,
     &:hover {
-      background-color: var(--color-bg-light-hover);
+      &:after {
+        background-color: var(--color-bg-light-hover);
+      }
     }
   }
 
@@ -38,7 +41,9 @@
 
     &:focus-visible,
     &:hover {
-      background-color: var(--color-bg-light-hover);
+      &:after {
+        background-color: var(--color-bg-light-hover);
+      }
     }
   }
 

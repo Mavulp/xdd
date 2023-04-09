@@ -24,5 +24,10 @@
   &:disabled {
     pointer-events: none !important;
     cursor: default !important;
+    color: var(--color-text-light);
+
+    svg {
+      color: var(--color-text-lighter);
+    }
   }
 }

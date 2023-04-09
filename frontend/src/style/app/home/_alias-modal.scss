@@ -1,15 +1,14 @@
 .alias-modal {
   @include t();
   position: fixed;
-  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   min-width: 780px;
   max-width: 1124px;
   width: 75vw;
   // --color-bg-light
-  background-color: rgba(#191919, 0.5);
-  backdrop-filter: blur(25px);
+  background-color: rgba(#191919, 0.8);
+  backdrop-filter: blur(50px);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--color-border);

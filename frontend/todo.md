@@ -1,8 +1,5 @@
 # To do
 
-- [] Implement display types
-  - [x] Large Icons
-  - [] list type
 - [] User dropdown
   - [] Log-out button, redirects to a logout page (deletes cookie / local
     storage auth) and logout page will have a "login-in" button that just
@@ -10,14 +7,14 @@
 - [] Update logo colors
 - [] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
 
-Header improvements
-
-- [] Add alias pagination (200 per page)
-- [] Include pagination in the header
-- [] Search & categories scroll with user
-
 ## Done
 
+- [x] Add alias pagination (200 per page)
+- [x] Include pagination in the header
+- [x] Search & categories scroll with user
+- [x] Implement display types
+  - [x] Large Icons
+  - [x] list type
 - [x] Implement edit form
 - [x] Correctly display emotes based on type
 - [x] Show amount of aliases in search placeholder "Serch in 12512 emotes"

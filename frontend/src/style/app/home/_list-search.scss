@@ -4,10 +4,12 @@
 // style into a single file, if it does not become bloated or confusing :)
 .list-search {
   display: block;
-  // width: 100%;
-  // max-width: var(--container-mid);
-  // margin: 0 auto 40px;
   margin-bottom: 40px;
+  position: sticky;
+  top: 0;
+  padding-top: 20px;
+  z-index: 5;
+  background-color: var(--color-bg);
 
   .input-wrap {
     position: relative;
@@ -33,7 +35,7 @@
   }
 
   .list-controls {
-    @include flex(20px, space-between);
+    @include flex(20px, flex-start);
 
     .list-types,
     .list-display-types {
@@ -42,6 +44,17 @@
 
     .list-types {
       gap: 15px;
+    }
+
+    .list-pagination {
+      @include flex(5px, flex-end);
+
+      span {
+        text-align: center;
+        width: 32px;
+        font-size: 1.4rem;
+        color: var(--color-text-light);
+      }
     }
   }
 }

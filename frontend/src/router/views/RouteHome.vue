@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { computed, onBeforeMount, ref } from 'vue'
+import { useOffsetPagination } from '@vueuse/core'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
@@ -47,6 +48,27 @@ const filteredAliases = computed(() => {
 
   return data
 })
+
+// Pagination setup
+const paginationSize = 50
+const {
+  currentPage,
+  prev,
+  next,
+  isFirstPage,
+  isLastPage,
+} = useOffsetPagination({
+  total: filteredAliases.value.length,
+  pageSize: paginationSize,
+  page: 1,
+})
+
+// Pagination array to render
+const aliasesToRender = computed(() => {
+  const start = (currentPage.value - 1) * paginationSize
+  const end = start + paginationSize - 1
+  return filteredAliases.value.slice(start, end)
+})
 </script>
 
 <template>
@@ -74,6 +96,20 @@ const filteredAliases = computed(() => {
               @click="toggleItem(item)"
             >
               {{ categoryLabels[item] }}
+            </button>
+          </div>
+
+          <div class="flex-1" />
+
+          <div v-if="filteredAliases.length > paginationSize" class="list-pagination">
+            <button class="button btn-white btn-icon" :disabled="isFirstPage" @click="prev">
+              <Icon icon="mdi:chevron-left" />
+            </button>
+            <span>
+              {{ currentPage }}
+            </span>
+            <button class="button btn-white btn-icon" :disabled="isLastPage" @click="next">
+              <Icon icon="mdi:chevron-right" />
             </button>
           </div>
 
@@ -128,10 +164,10 @@ const filteredAliases = computed(() => {
         }"
       >
         <template v-if="displayType !== 'list'">
-          <AliasNormal v-for="item in filteredAliases" :key="item.name" :data="item" />
+          <AliasNormal v-for="item in aliasesToRender" :key="item.name" :data="item" />
         </template>
         <template v-else>
-          <AliasInline v-for="item in filteredAliases" :key="item.name" :data="item" />
+          <AliasInline v-for="item in aliasesToRender" :key="item.name" :data="item" />
         </template>
       </div>
     </div>
