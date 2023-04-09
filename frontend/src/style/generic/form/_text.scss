@@ -21,6 +21,11 @@ textarea {
     box-shadow: 0 8px 24px rgba(#0a0a0a, 0.15);
     border-color: var(--color-accent);
   }
+
+  &:disabled {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-light);
+  }
 }
 
 textarea {

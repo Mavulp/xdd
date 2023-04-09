@@ -3,6 +3,7 @@
 // visible as long as a component is clicked on
 import { computed, nextTick, ref, watch } from 'vue'
 import { onKeyDown, useClipboard } from '@vueuse/core'
+import { useRouter } from 'vue-router'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useToast } from '../../store/toast'
 import Spinner from '../generic/Spinner.vue'
@@ -77,6 +78,20 @@ watch(() => active.value?.name, async () => {
 
 // Close when escape is pressed
 onKeyDown('Escape', close)
+
+// Redirect to edit page
+const router = useRouter()
+function goToEdit() {
+  if (!active.value)
+    return
+
+  router.push({
+    name: 'RouteEdit',
+    params: {
+      name: active.value.name,
+    },
+  })
+}
 </script>
 
 <template>
@@ -112,7 +127,7 @@ onKeyDown('Escape', close)
           <p>By {{ active.author }}</p>
           <div v-if="user.can(['edit-aliases', 'delete-aliases'])" class="spacer" />
 
-          <button v-if="user.can('edit-aliases')">
+          <button v-if="user.can('edit-aliases')" @click="goToEdit()">
             Edit
           </button>
           <button v-if="user.can('delete-aliases')" @click="alias.remove(active?.name ?? '')">

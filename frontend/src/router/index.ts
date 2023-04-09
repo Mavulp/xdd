@@ -49,6 +49,19 @@ const router = createRouter({
       },
     },
     {
+      path: '/edit/:name',
+      name: 'RouteEdit',
+      component: RouteCreate,
+      meta: {
+        title: 'Edit Alias',
+        requiresAuth: true,
+      },
+      beforeEnter() {
+        const user = useUser()
+        return user.can('edit-aliases')
+      },
+    },
+    {
       path: '/authorize',
       name: 'RouteAuthorize',
       component: RouteAuthorize,

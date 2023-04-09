@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Alias } from '../types/Alias'
 import type { PostAlias } from '../types/PostAlias'
+import type { PutAlias } from '../types/PutAlias'
 import { LOAD } from '../js/definitions'
-import { del, get, post } from '../js/fetch'
+import { del, get, post, put } from '../js/fetch'
 import type { AliasType } from '../types/AliasType'
 import { useLoading } from './loading'
 import { useToast } from './toast'
@@ -35,7 +36,7 @@ export const useAlias = defineStore('alias', () => {
     const { push } = useToast()
     add(LOAD.CREATE)
 
-    post('/alias', form)
+    return post('/alias', form)
       .then((newAlias) => {
         push({
           type: 'success',
@@ -55,11 +56,11 @@ export const useAlias = defineStore('alias', () => {
     const { add, del: _del } = useLoading()
     const { push } = useToast()
     add(LOAD.DELETE)
-    del(`/alias/${name}`)
+    return del(`/alias/${name}`)
       .then(() => {
         push({
           type: 'success',
-          message: `Successfully removed alias "${name}"`,
+          message: `Successfully removed "${name}"`,
         })
 
         list.value = list.value.filter(l => l.name !== name)
@@ -78,10 +79,34 @@ export const useAlias = defineStore('alias', () => {
     del(LOAD.FETCH)
   }
 
+  function edit(name: Alias['name'], form: PutAlias) {
+    const { add, del: _del } = useLoading()
+    const { push } = useToast()
+    add(LOAD.EDIT)
+    return put(`/alias/${name}`, form)
+      .then(() => {
+        push({
+          type: 'success',
+          message: `Successfully updated "${name}"`,
+        })
+
+        const index = list.value.findIndex(a => a.name === name)
+        const original = { ...list.value[index] }
+        Object.assign(original, form)
+        list.value.splice(index, 1, original)
+      })
+      .catch(({ message }) => push({
+        type: 'error',
+        message,
+      }))
+      .finally(() => _del(LOAD.EDIT))
+  }
+
   return {
     list,
     categories,
     add,
+    edit,
     remove,
     fetch,
     active,
