@@ -52,7 +52,7 @@ export const useAlias = defineStore('alias', () => {
       .finally(() => del(LOAD.CREATE))
   }
 
-  function remove(name: Alias['name']) {
+  async function remove(name: Alias['name']) {
     const { add, del: _del } = useLoading()
     const { push } = useToast()
     add(LOAD.DELETE)
@@ -72,14 +72,27 @@ export const useAlias = defineStore('alias', () => {
       .finally(() => _del(LOAD.DELETE))
   }
 
+  const cacheTimeout = ref<number>()
+  const cacheLimitInSeconds = 3600
   async function fetch() {
+    if (cacheTimeout.value && Date.now() - cacheTimeout.value < (cacheLimitInSeconds * 1000))
+      return Promise.resolve(list.value)
+
     const { add, del } = useLoading()
     add(LOAD.FETCH)
-    list.value = await get<Alias[]>('/alias').catch(() => [])
-    del(LOAD.FETCH)
+    return get<Alias[]>('/alias')
+      .then((res) => {
+        list.value = res
+        return res
+      })
+      .catch(() => [])
+      .finally(() => {
+        del(LOAD.FETCH)
+        cacheTimeout.value = Date.now()
+      })
   }
 
-  function edit(name: Alias['name'], form: PutAlias) {
+  async function edit(name: Alias['name'], form: PutAlias) {
     const { add, del: _del } = useLoading()
     const { push } = useToast()
     add(LOAD.EDIT)
