@@ -8,6 +8,12 @@ export const useUser = defineStore('user', () => {
   const isSignedIn = ref(!isNil(localStorage.getItem(TOKEN_KEY)))
   const permissions = ref<string[]>([])
 
+  function reset() {
+    username.value = ''
+    isSignedIn.value = false
+    permissions.value = []
+  }
+
   // Check wether user object includes the provided permission(s)
   function can(allowed: string[] | string) {
     if (typeof allowed === 'string')
@@ -17,6 +23,7 @@ export const useUser = defineStore('user', () => {
 
   return {
     can,
+    reset,
     username,
     isSignedIn,
     permissions,

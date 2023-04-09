@@ -6,6 +6,8 @@
     redirects to Routehome because authentication is forced automatically
 - [] Update logo colors
 - [] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
+- [] Add 1 hour session timeout for fetching quotes (in the main view only)
+  - Cancel fetch if quotes list exists && has been fetched within the next 60 minutes
 
 ## Done
 

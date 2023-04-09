@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { flip, offset, shift, size, useFloating } from '@floating-ui/vue'
+import { flip, offset, useFloating } from '@floating-ui/vue'
 import { computed, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 
@@ -13,12 +13,11 @@ onClickOutside(anchor, () => {
 
 // FLoating
 const { x, y, strategy } = useFloating(anchor, dropdown, {
-  placement: 'bottom-start',
-  middleware: [shift(), flip(), size({
-    apply({ availableHeight, elements }) {
-      elements.floating.style.maxHeight = `${availableHeight - 15}px`
-    },
-  }), offset(8)],
+  placement: 'bottom-end',
+  middleware: [
+    flip(),
+    offset(8),
+  ],
 })
 
 const computedPosition = computed(() => ({
@@ -33,7 +32,7 @@ const computedPosition = computed(() => ({
     <!-- <button class="dropdown-trigger" @click="open = true"> -->
     <slot name="button" :open="open" :trigger="() => open = !open" />
     <!-- </button> -->
-    <div v-if="open" class="dropdown" :style="computedPosition">
+    <div v-if="open" ref="dropdown" class="dropdown" :style="computedPosition">
       <slot />
     </div>
   </div>

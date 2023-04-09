@@ -19,6 +19,9 @@ function setupUser(token: string) {
 }
 
 export default async function (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+  if (to.name === 'RouteSignOut')
+    next()
+
   const user = useUser()
   const token = localStorage.getItem(TOKEN_KEY)
 

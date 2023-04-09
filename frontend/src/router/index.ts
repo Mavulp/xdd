@@ -7,6 +7,7 @@ import beforeResolve from './guards/beforeResolve'
 import RouteHome from './views/RouteHome.vue'
 import RouteCreate from './views/RouteCreate.vue'
 import RouteAuthorize from './views/RouteAuthorize.vue'
+import RouteSignOutVue from './views/RouteSignOut.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -67,6 +68,19 @@ const router = createRouter({
       component: RouteAuthorize,
       meta: {
         title: 'You are being authorized. Wait! NO DONT CLICK ANYTHING!!',
+      },
+    },
+    {
+      path: '/sign-out',
+      name: 'RouteSignOut',
+      component: RouteSignOutVue,
+      meta: {
+        title: 'You just logged out. Wanna come back?',
+      },
+      // Allow users to only enter this page if they are logged out
+      beforeEnter() {
+        const user = useUser()
+        return !user.isSignedIn
       },
     },
   ],

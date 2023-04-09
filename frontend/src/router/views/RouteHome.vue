@@ -149,7 +149,7 @@ function goUp() {
         </div>
       </div>
 
-      <div v-if="loading.get(LOAD.FETCH)">
+      <div v-if="loading.get(LOAD.FETCH)" class="list-loading">
         <Spinner />
       </div>
 

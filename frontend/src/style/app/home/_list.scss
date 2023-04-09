@@ -39,3 +39,12 @@
   border: 1px dashed var(--color-border);
   padding: 60px;
 }
+
+.list-loading {
+  @include flex(0, center, center);
+  height: 128px;
+
+  svg {
+    font-size: 2rem;
+  }
+}
