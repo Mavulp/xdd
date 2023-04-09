@@ -10,6 +10,12 @@
 - [] Update logo colors
 - [] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
 
+Header improvements
+
+- [] Add alias pagination (200 per page)
+- [] Include pagination in the header
+- [] Search & categories scroll with user
+
 ## Done
 
 - [x] Implement edit form

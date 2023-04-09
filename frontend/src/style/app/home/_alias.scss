@@ -44,6 +44,59 @@
     }
   }
 
+  // List type
+  &.alias-inline {
+    @include flex(5px);
+    width: 100%;
+    height: unset;
+    padding: 10px 5px;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+
+    &:after {
+      left: 0;
+      right: 0;
+      bottom: 5px;
+    }
+
+    &.alias-active,
+    &:hover {
+      &:after {
+        height: calc(100% - 10px);
+      }
+    }
+
+    strong {
+      @include font(700);
+      font-size: 1.3rem;
+      flex: 1;
+      text-align: left;
+      color: var(--color-text);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .thumbnail {
+      width: 48px;
+      height: 48px;
+      margin: 0;
+      margin-right: 20px;
+      pointer-events: none;
+
+      img {
+        width: unset;
+        height: 48px;
+      }
+    }
+
+    .button svg {
+      font-size: 2rem;
+    }
+  }
+
   .thumbnail {
     // width: ;
     @include flex(0, center, center);

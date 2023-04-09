@@ -122,7 +122,7 @@ function goToEdit() {
         </div>
 
         <div class="meta">
-          <p>Added {{ date }}</p>
+          <p>{{ date }}</p>
           <div class="spacer" />
           <p>By {{ active.author }}</p>
           <div v-if="user.can(['edit-aliases', 'delete-aliases'])" class="spacer" />

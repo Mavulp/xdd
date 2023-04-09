@@ -119,7 +119,14 @@ const filteredAliases = computed(() => {
         </div>
       </template>
 
-      <div v-else class="list" :class="{ 'large-icons': displayType === 'large-icon' }">
+      <div
+        v-else
+        class="list"
+        :class="{
+          'large-icons': displayType === 'large-icon',
+          'is-inline': displayType === 'list',
+        }"
+      >
         <template v-if="displayType !== 'list'">
           <AliasNormal v-for="item in filteredAliases" :key="item.name" :data="item" />
         </template>
