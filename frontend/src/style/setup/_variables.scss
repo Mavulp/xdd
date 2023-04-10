@@ -14,6 +14,7 @@
   --color-text-light: #9e9e9e;
   --color-text-lighter: #646464;
   --color-text-invert: #111111;
+  --color-text-static: #111111;
 
   --color-accent: #ffd100;
   --color-accent-bg: #272000;
@@ -43,4 +44,19 @@
   --radius-lg: 10px;
   --radius-sm: 4px;
   --radius-tn: 3px;
+}
+
+:root.light-theme {
+  --color-bg: #fafafa;
+  --color-bg-light: #e6e6e6;
+  --color-bg-light-hover: #d3d3d3;
+
+  --color-text: #111111;
+  --color-text-light: #1f1f1f;
+  --color-text-lighter: #2f2f2f;
+
+  --color-border: #afafaf;
+  --color-border-light: #bfbfbf;
+
+  --color-text-invert: #e7e7e7;
 }

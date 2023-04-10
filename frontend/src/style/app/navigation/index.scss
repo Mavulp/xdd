@@ -14,8 +14,13 @@ header {
     position: relative;
     color: var(--color-text-light);
 
+    &.router-link-active,
     &:hover {
       color: var(--color-text);
+
+      span {
+        color: var(--color-text);
+      }
 
       &:before {
         height: 100%;
@@ -76,6 +81,7 @@ header {
     padding-right: 10px;
     justify-self: end;
     cursor: pointer;
+    padding-left: 0;
 
     .pfp {
       @include flex(0, center, center);

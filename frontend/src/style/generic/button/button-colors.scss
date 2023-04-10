@@ -56,13 +56,15 @@
     // }
 
     background-color: var(--color-accent);
-    color: var(--color-text-invert);
+    color: var(--color-text-static);
 
     svg {
-      color: var(--color-text-invert);
+      color: var(--color-text-static);
     }
+
     &:focus-visible,
     &:hover {
+      // color: var(--color-text);
     }
   }
 }

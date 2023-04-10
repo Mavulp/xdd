@@ -43,8 +43,8 @@ async function signOut() {
     </nav>
     <div class="user-wrap">
       <Dropdown>
-        <template #button="{ trigger }">
-          <button class="user" @click="trigger">
+        <template #button="{ trigger, open }">
+          <button class="user" :class="{ 'router-link-active': open }" @click="trigger">
             <div class="pfp">
               <strong>{{ user.username.at(0) }}</strong>
             </div>
