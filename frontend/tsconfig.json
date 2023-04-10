@@ -14,7 +14,13 @@
       "DOM"
     ],
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@dolanske/v-valid": [
+        "node_modules/@dolanske/v-valid/dist/index.d.ts"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",
