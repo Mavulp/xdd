@@ -185,6 +185,13 @@ function goUp() {
       </Transition>
     </div>
 
+    <footer>
+      <p class="made-by">
+        <Icon icon="mdi:code" />
+        Made by <a href="https://github.com/mavulp" target="_blank">Mavulp</a> in 2023
+      </p>
+    </footer>
+
     <AliasModal />
   </div>
 </template>

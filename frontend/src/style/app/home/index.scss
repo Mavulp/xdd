@@ -2,3 +2,22 @@
 @import "./list";
 @import "./alias";
 @import "./alias-modal";
+
+footer {
+  @include flex(0, center);
+  width: 100%;
+  padding: 40px 0;
+
+  p {
+    @include font(500);
+    color: var(--color-text-light);
+
+    a {
+      @include font(700);
+    }
+  }
+
+  svg {
+    color: var(--color-hihglight);
+  }
+}
