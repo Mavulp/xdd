@@ -1,5 +1,8 @@
 # To do
 
+- [] Long title does not wrap on new line (should push entire row further to stay inline) 
+- [] When scroll up arrow appears, it pushes footer down, footer could be either absolute or the arrow should have height 0
+
 ## Done
 
 - [x] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
