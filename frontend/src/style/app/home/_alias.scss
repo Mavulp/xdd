@@ -135,6 +135,7 @@
   }
 
   .name {
+    word-wrap: break-word;
     span {
       @include font(500);
       font-size: 1.1rem;

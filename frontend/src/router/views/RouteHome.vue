@@ -178,11 +178,9 @@ function goUp() {
         </template>
       </div>
 
-      <Transition name="fade" appear>
-        <button v-if="y > 250" class="button btn-white btn-icon btn-go-up" @click="goUp()">
-          <Icon icon="mdi:arrow-up" />
-        </button>
-      </Transition>
+      <button :style="{ opacity: y > 250 ? 1 : 0 }" class="button btn-white btn-icon btn-go-up" @click="goUp()">
+        <Icon icon="mdi:arrow-up" />
+      </button>
     </div>
 
     <footer>

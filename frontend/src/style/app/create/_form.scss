@@ -1,25 +1,27 @@
 .route-create {
   .form-wrap {
+    margin-top: 40px;
     @include grid(40px, 256px 1fr);
+
+    .form-preview-wrap {
+      span {
+        @include font(700);
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 5px;
+        color: var(--color-text-light);
+        text-transform: uppercase;
+      }
+    }
 
     .form-preview {
       @include flex(0, center, center);
       border-radius: var(--radius-lg);
       position: relative;
       height: 256px;
-      background-color: var(--color-bg-light);
+      border: 1px solid var(--color-border);
       box-shadow: var(--shadow);
       padding: 10px;
-
-      span {
-        @include font(700);
-        position: absolute;
-        bottom: -20px;
-        left: 0px;
-        font-size: 1rem;
-        color: var(--color-text-light);
-        text-transform: uppercase;
-      }
 
       img {
         max-width: 100%;
@@ -37,10 +39,30 @@
       strong {
         @include flex(5px, center);
         font-size: 1.2rem;
+        color: var(--color-text-lighter);
 
         svg {
           font-size: 1.6rem;
         }
+      }
+    }
+
+    .flex {
+      border-top: 1px solid var(--color-border);
+      padding-top: 20px;
+    }
+
+    .preview-meta {
+      margin-top: 10px;
+      @include flex(20px, center);
+
+      p:first-child {
+        text-transform: uppercase;
+      }
+
+      p {
+        color: var(--color-text-light);
+        font-size: 1.2rem;
       }
     }
   }
@@ -52,6 +74,31 @@
 
     .flex {
       margin-top: 40px;
+    }
+  }
+
+  .form-note {
+    display: block;
+    margin-bottom: 40px;
+    font-size: 1.3rem;
+    line-height: 1.5em;
+    padding-left: 20px;
+    margin-top: -5px;
+    color: var(--color-text-lighter);
+
+    code {
+      border-radius: var(--radius-tn);
+      @include font(400);
+      // background-color: var(--color-bg-light);
+      border: 1px solid var(--color-border-light);
+      padding: 2px 3px;
+      color: var(--color-text-lighter);
+    }
+
+    svg {
+      font-size: 1.6rem;
+      opacity: 0.5;
+      color: var(--color-accent);
     }
   }
 

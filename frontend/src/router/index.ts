@@ -23,7 +23,7 @@ const router = createRouter({
     },
     {
       // The path to the the page
-      path: '/home',
+      path: '/aliases',
       // Name is used for matching routes. Allowing you to change url to the
       // page without having to update all the
       name: 'RouteHome',

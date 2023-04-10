@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { computed, onBeforeMount, reactive, ref, watch } from 'vue'
-import { maxLength, minLength, required, url, useValidation } from '@dolanske/v-valid'
+import { computed, onBeforeMount, reactive, watch } from 'vue'
+import { maxLenNoSpace, maxLength, minLenNoSpace, minLength, required, url, useValidation } from '@dolanske/v-valid'
 import { useRoute, useRouter } from 'vue-router'
 import type { PostAlias } from '../../types/PostAlias'
 import InputText from '../../components/form/InputText.vue'
@@ -11,6 +11,7 @@ import Spinner from '../../components/generic/Spinner.vue'
 import InputSelect from '../../components/form/InputSelect.vue'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useToast } from '../../store/toast'
+import { isImageValidRule, noExclamationMarkRule } from '../../js/rules'
 
 const loading = useLoading()
 const alias = useAlias()
@@ -29,15 +30,16 @@ const form = reactive<PostAlias>({
 const rules = {
   name: {
     required,
-    minLength: minLength(1),
-    maxLength: maxLength(32),
+    minLength: minLenNoSpace(1),
+    maxLength: maxLenNoSpace(24),
+    noExclamationMarkRule,
   },
   content: {
     required,
     minLength: minLength(1),
     maxLength: maxLength(8192),
+    isImageValidRule,
   },
-  // FIXME remove after updating v-valid
   type: {},
 }
 
@@ -96,22 +98,36 @@ onBeforeMount(() => {
 })
 
 // Watch for input content and manually select type
-const contentUrl = ref<string>()
+const defaultMeta = {
+  url: null,
+  width: 0,
+  height: 0,
+  type: undefined,
+}
+const emoteSizeThreshold = 40
+const contentMeta = reactive({ ...defaultMeta })
 
 watch(() => form.content, async (value) => {
-  contentUrl.value = undefined
+  console.log(url.validate(value))
+
+  Object.assign(contentMeta, { ...defaultMeta })
 
   if (!value)
     return
 
   // Check if content is URL or plain text
   if (url.validate(value)) {
-    const emoteSizeThreshold = 64
     const image = new Image()
     image.src = value
 
     image.onload = () => {
-      contentUrl.value = image.src
+      // contentUrl.value = image.src
+      Object.assign(contentMeta, {
+        url: image.src,
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+        type: image.src.split('.').at(-1),
+      })
 
       if (image.naturalHeight > emoteSizeThreshold || image.naturalWidth > emoteSizeThreshold)
         form.type = value.endsWith('.gif') ? 'gif' : 'image'
@@ -128,23 +144,34 @@ watch(() => form.content, async (value) => {
 <template>
   <div class="route-create">
     <div class="container mid">
-      <h3>{{ isEdit ? `Edit "${route.params.name}"` : 'Add Alias' }}</h3>
-
+      <h3>{{ isEdit ? `Edit "${route.params.name}"` : 'Create Alias' }}</h3>
       <div class="form-wrap">
-        <div class="form-preview">
+        <div class="form-preview-wrap">
           <span>Preview</span>
+          <div class="form-preview">
+            <template v-if="form.content">
+              <img v-if="contentMeta.url" :src="contentMeta.url" alt=" ">
+              <p v-else>
+                {{ form.content }}
+              </p>
+            </template>
 
-          <template v-if="form.content">
-            <img v-if="contentUrl" :src="contentUrl" alt=" ">
-            <p v-else>
-              {{ form.content }}
+            <strong v-else>
+              Nothing to preview
+              <!-- <Icon icon="mdi:arrow-right" /> -->
+            </strong>
+          </div>
+          <div class="preview-meta">
+            <template v-if="contentMeta.url">
+              <p v-if="contentMeta.type">
+                {{ contentMeta.type }}
+              </p>
+              <p>{{ contentMeta.width }}x{{ contentMeta.height }}</p>
+            </template>
+            <p v-else-if="form.content">
+              {{ form.content.split(/(\s+)/).length }} words
             </p>
-          </template>
-
-          <strong v-else>
-            No content to display. Add some
-            <Icon icon="mdi:arrow-right" />
-          </strong>
+          </div>
         </div>
         <!-- <div class="form-create"> -->
         <form class="form-create" @submit.prevent="submit">
@@ -155,19 +182,28 @@ watch(() => form.content, async (value) => {
             placeholder="funny"
             :err="validation.errors.name"
           />
+          <p v-if="!isEdit" class="form-note">
+            <Icon icon="mdi:info" />
+            The alias name is what gets replaced with its content. <br>
+            Name should be simple and easy to remember.
+          </p>
           <InputTextarea
             v-model="form.content"
             label="Content"
             placeholder="Paste a Url or a copy-pasta here..."
             :err="validation.errors.content"
           />
-
           <InputSelect
             v-model="form.type"
             label="Alias type"
             :options="categoryLabels"
             cantclear
           />
+
+          <p v-if="!isEdit" class="form-note">
+            <Icon icon="mdi:info" />
+            The type is automatically set based on the input. But you can change it. <br> The main difference between an <code>image/gif</code> and a <code>emote/animatedEmote</code> is the size. Emotes (below {{ emoteSizeThreshold }}x{{ emoteSizeThreshold }}) are displayed inline with text while <br> images / gifs render in full size, pushing the remaining content aside.
+          </p>
 
           <div class="flex right">
             <button
