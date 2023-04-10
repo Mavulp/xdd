@@ -8,8 +8,9 @@
   position: sticky;
   top: 0;
   z-index: 5;
-  margin: 0 -128px;
+  margin: -20px -128px 0;
   padding: 20px 128px;
+
   // --color-bg
   background-color: rgba(#111111, 0.8);
   backdrop-filter: blur(20px);

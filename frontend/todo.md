@@ -1,9 +1,13 @@
 # To do
 
-- [] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
-
 ## Done
 
+- [x] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
+  - [x] Check if content is url
+    - [x] Load content and check its size
+      - [x] if it's below 64 (or some threshold), suggest emote (animated or normal based on ending)
+      - [x] else just assign gif or image
+  - [x] if not url, set content as text
 - [x] Update logo colors
 - [x] Add 1 hour session timeout for fetching quotes (in the main view only)
   - Cancel fetch if quotes list exists && has been fetched within the next 60 minutes

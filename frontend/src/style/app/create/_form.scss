@@ -1,4 +1,50 @@
 .route-create {
+  .form-wrap {
+    @include grid(40px, 256px 1fr);
+
+    .form-preview {
+      @include flex(0, center, center);
+      border-radius: var(--radius-lg);
+      position: relative;
+      height: 256px;
+      background-color: var(--color-bg-light);
+      box-shadow: var(--shadow);
+      padding: 10px;
+
+      span {
+        @include font(700);
+        position: absolute;
+        bottom: -20px;
+        left: 0px;
+        font-size: 1rem;
+        color: var(--color-text-light);
+        text-transform: uppercase;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-position: center;
+        object-fit: contain;
+      }
+
+      p {
+        overflow-y: auto;
+        max-height: 100%;
+        line-height: 1.5em;
+      }
+
+      strong {
+        @include flex(5px, center);
+        font-size: 1.2rem;
+
+        svg {
+          font-size: 1.6rem;
+        }
+      }
+    }
+  }
+
   .form-create {
     textarea {
       min-height: 128px;

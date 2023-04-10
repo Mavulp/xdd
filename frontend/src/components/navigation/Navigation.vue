@@ -22,7 +22,7 @@ async function signOut() {
 
 <template>
   <header>
-    <RouterLink :to="{ name: 'RouteHome' }" class="disable-hover">
+    <RouterLink :to="{ name: 'RouteHome' }" class="disable-hover logo">
       <img src="/icons/logo.svg" alt="">
     </RouterLink>
 

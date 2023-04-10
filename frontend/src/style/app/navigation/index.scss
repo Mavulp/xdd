@@ -2,9 +2,11 @@ header {
   @include grid(30px, 3);
   // @include flex(30px);
   width: 100%;
-  padding: 40px;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  padding: 20px 40px;
+  // padding-bottom: 20px;
+  margin-bottom: 40px;
+  // background-color: var(--color-bg-light);
+  border-bottom: 1px solid var(--color-border);
 
   .user,
   a:not(.disable-hover) {
@@ -62,6 +64,10 @@ header {
 
   .user-wrap {
     @include flex($j: flex-end);
+  }
+
+  .logo {
+    @include flex(0, $a: center);
   }
 
   .user {
