@@ -91,6 +91,9 @@ onMounted(() => {
       active: query.value.substring(1),
     })
   }
+  else if (alias.active) {
+    query.value = `#${alias.active}`
+  }
 })
 </script>
 
