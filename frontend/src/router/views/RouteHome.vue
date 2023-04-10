@@ -1,6 +1,7 @@
 <script setup lang='ts'>
-import { computed, onBeforeMount, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import { useOffsetPagination, useWindowScroll } from '@vueuse/core'
+import { useRouteHash } from '@vueuse/router'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
@@ -76,6 +77,21 @@ const { y } = useWindowScroll()
 function goUp() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+// Update url
+// watch(() => alias.active, )
+const query = useRouteHash()
+watch(() => alias.active, (value) => {
+  query.value = value ? `#${value}` : ''
+})
+
+onMounted(() => {
+  if (query.value) {
+    alias.$patch({
+      active: query.value.substring(1),
+    })
+  }
+})
 </script>
 
 <template>
