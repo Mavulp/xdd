@@ -1,14 +1,14 @@
 # To do
 
+- [] Fix user not being authenticated on reload
+- [] Add active emote to the URL (open it with it too)
+
+## Done
 - [x] Long title does not wrap on new line (should push entire row further to stay inline) 
 - [x] When scroll up arrow appears, it pushes footer down, footer could be either absolute or the arrow should have height 0
 - [x] Update language
   - [x] Emote is only a category, should call it alias always
   - [x] /home -> /aliases
-- [] Add active emote to the URL (open it with it too)
-
-## Done
-
 - [x] Improve creating / editing form to include preview (maybe use modal at the bottom too?)
   - [x] Check if content is url
     - [x] Load content and check its size

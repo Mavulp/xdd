@@ -46,7 +46,10 @@ const router = createRouter({
       // permissions
       beforeEnter() {
         const user = useUser()
-        return user.can('create-aliases')
+        // If user is not allowed, re-route back to list
+        if (!user.can('create-aliases'))
+          return { name: 'RouteHome' }
+        return true
       },
     },
     {
@@ -59,7 +62,10 @@ const router = createRouter({
       },
       beforeEnter() {
         const user = useUser()
-        return user.can('edit-aliases')
+        // If user is not allowed, re-route back to list
+        if (!user.can('edit-aliases'))
+          return { name: 'RouteHome' }
+        return true
       },
     },
     {
@@ -80,6 +86,8 @@ const router = createRouter({
       // Allow users to only enter this page if they are logged out
       beforeEnter() {
         const user = useUser()
+        if (user.isSignedIn)
+          return { name: 'RouteHome' }
         return !user.isSignedIn
       },
     },

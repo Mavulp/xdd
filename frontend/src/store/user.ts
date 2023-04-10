@@ -16,6 +16,9 @@ export const useUser = defineStore('user', () => {
 
   // Check wether user object includes the provided permission(s)
   function can(allowed: string[] | string) {
+    if (permissions.value.length === 0)
+      return false
+
     if (typeof allowed === 'string')
       allowed = [allowed]
     return allowed.some(item => permissions.value.includes(item))
