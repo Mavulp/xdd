@@ -1,9 +1,10 @@
 # To do
 
-- [] Add light mode toggle
 
 ## Done
 
+- [x] Tweak light mode colors
+- [x] Add light mode toggle
 - [x] Add active emote to the URL (open it with it too)
 - [x] Long title does not wrap on new line (should push entire row further to stay inline)
 - [x] Fix user not being authenticated on reload
