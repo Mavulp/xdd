@@ -2,6 +2,7 @@
 import { computed, onBeforeMount, reactive, watch } from 'vue'
 import { maxLenNoSpace, maxLength, minLenNoSpace, minLength, required, url, useValidation } from '@dolanske/v-valid'
 import { useRoute, useRouter } from 'vue-router'
+import { IconClose, IconInfo } from '@iconify-prerendered/vue-mdi'
 import type { PostAlias } from '../../types/PostAlias'
 import InputText from '../../components/form/InputText.vue'
 import InputTextarea from '../../components/form/InputTextarea.vue'
@@ -158,7 +159,6 @@ watch(() => form.content, async (value) => {
 
             <strong v-else>
               Nothing to preview
-              <!-- <Icon icon="mdi:arrow-right" /> -->
             </strong>
           </div>
           <div class="preview-meta">
@@ -183,7 +183,7 @@ watch(() => form.content, async (value) => {
             :err="validation.errors.name"
           />
           <p v-if="!isEdit" class="form-note">
-            <Icon icon="mdi:info" />
+            <IconInfo />
             The alias name is what gets replaced with its content. <br>
             Name should be simple and easy to remember.
           </p>
@@ -201,7 +201,7 @@ watch(() => form.content, async (value) => {
           />
 
           <p v-if="!isEdit" class="form-note">
-            <Icon icon="mdi:info" />
+            <IconInfo />
             The type is automatically set based on the input but can be changed. <br> The main difference between an <code>image/gif</code> and a <code>emote/animatedEmote</code> is the size. Emotes (below {{ emoteSizeThreshold }}x{{ emoteSizeThreshold }}) are displayed inline with text while <br> images / gifs render in full size, pushing the remaining content aside.
           </p>
 
@@ -211,7 +211,7 @@ watch(() => form.content, async (value) => {
               class="button btn-white"
               @click.prevent="clear()"
             >
-              <Icon icon="ph:x" />
+              <IconClose />
               Cancel
             </button>
             <button

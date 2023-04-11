@@ -75,7 +75,7 @@
       flex: 1;
       text-align: left;
       color: var(--color-text);
-      text-transform: uppercase;
+      // text-transform: uppercase;
       pointer-events: none;
     }
 
@@ -136,10 +136,11 @@
 
   .name {
     word-wrap: break-word;
+
     span {
       @include font(500);
       font-size: 1.1rem;
-      text-transform: uppercase;
+      // text-transform: uppercase;
       color: var(--color-text-light);
     }
   }

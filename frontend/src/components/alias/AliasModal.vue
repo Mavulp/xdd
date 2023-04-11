@@ -4,6 +4,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { onKeyDown, useClipboard } from '@vueuse/core'
 import { useRouter } from 'vue-router'
+import { IconAttachment, IconClose, IconContentCopy } from '@iconify-prerendered/vue-mdi'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useToast } from '../../store/toast'
 import Spinner from '../generic/Spinner.vue'
@@ -97,7 +98,8 @@ function goToEdit() {
 <template>
   <div class="alias-modal" :class="{ 'modal-active': alias.activeAlias }">
     <button class="button btn-icon btn-white btn-close" @click="close()">
-      <Icon icon="mdi:close" />
+      <!-- <Icon icon="mdi:close" /> -->
+      <IconClose />
     </button>
     <div v-if="active" class="modal-wrapper">
       <div ref="contentEl" class="content">
@@ -111,13 +113,15 @@ function goToEdit() {
       <div class="info" :class="{ 'show-padding': showPadding }">
         <span class="category">{{ categoryLabels[active.type] }}</span>
         <div class="name">
-          <strong>{{ active.name }}</strong>
+          <strong>!{{ active.name }}</strong>
 
           <button class="button btn-white btn-icon btn-large" data-title-bottom="Copy Alias" @click="copyAlias">
-            <Icon icon="mdi:content-copy" />
+            <!-- <Icon icon="mdi:content-copy" /> -->
+            <IconContentCopy />
           </button>
           <button class="button btn-white btn-icon btn-large" data-title-bottom="Copy Content (url or text)" @click="copyContent()">
-            <Icon icon="mdi:attachment" />
+            <!-- <Icon icon="mdi:attachment" /> -->
+            <IconAttachment />
           </button>
         </div>
 

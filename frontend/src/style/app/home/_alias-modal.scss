@@ -91,7 +91,7 @@
       .name {
         @include flex(10px);
         width: 100%;
-        text-transform: uppercase;
+        // text-transform: uppercase;
         color: var(--color-text);
         margin-bottom: 20px;
         position: relative;

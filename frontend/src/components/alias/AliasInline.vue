@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { useClipboard } from '@vueuse/core'
+import { IconAttachment, IconContentCopy } from '@iconify-prerendered/vue-mdi'
 import { useAlias } from '../../store/alias'
 import { useToast } from '../../store/toast'
 import type { Alias } from '../../types/Alias'
@@ -49,10 +50,12 @@ function copyContent() {
     <strong>{{ props.data.name }}</strong>
 
     <button class="button btn-white btn-icon" data-title-bottom="Copy Alias" @click="copyAlias">
-      <Icon icon="mdi:content-copy" />
+      <!-- <Icon icon="mdi:content-copy" /> -->
+      <IconContentCopy />
     </button>
     <button class="button btn-white btn-icon" data-title-bottom="Copy Content (url or text)" @click="copyContent()">
-      <Icon icon="mdi:attachment" />
+      <!-- <Icon icon="mdi:attachment" /> -->
+      <IconAttachment />
     </button>
   </button>
 </template>

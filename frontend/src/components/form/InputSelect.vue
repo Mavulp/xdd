@@ -3,6 +3,7 @@ import { flip, offset, shift, size, useFloating } from '@floating-ui/vue'
 import { onClickOutside } from '@vueuse/core'
 import { isArray } from 'lodash-es'
 import { computed, ref } from 'vue'
+import { IconChevronDown, IconChevronUp } from '@iconify-prerendered/vue-mdi'
 
 type Options = Record<string, string>
 type Value = string | string[] | null
@@ -105,7 +106,9 @@ const computedPosition = computed(() => ({
       @click="open = !open"
     >
       {{ buttonText }}
-      <Icon :icon="open ? 'ph:caret-up' : 'ph:caret-down'" />
+      <IconChevronUp v-if="open" />
+      <IconChevronDown v-else />
+      <!-- <Icon :icon="open ? 'mdi:chevron-up' : 'mdi:chevron-down'" /> -->
     </button>
 
     <div v-if="open" ref="dropdown" class="dropdown" :style="computedPosition">

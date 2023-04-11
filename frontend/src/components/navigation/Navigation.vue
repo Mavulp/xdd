@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { useDark, useToggle } from '@vueuse/core'
 import { useRouter } from 'vue-router'
+import { IconAccount, IconMoonWaningCrescent, IconWhiteBalanceSunny } from '@iconify-prerendered/vue-mdi'
 import { TOKEN_KEY } from '../../js/config'
 import { post } from '../../js/fetch'
 import { useUser } from '../../store/user'
@@ -62,11 +63,14 @@ const toggleDark = useToggle(isDark)
         </template>
         <template #default>
           <button class="button btn-white btn-small btn-full" @click="signOut()">
-            <Icon icon="mdi:account" />
+            <!-- <Icon icon="mdi:account" /> -->
+            <IconAccount />
             Sign Out
           </button>
           <button class="button btn-white btn-small btn-full" @click="toggleDark()">
-            <Icon :icon="isDark ? 'mdi:white-balance-sunny' : 'mdi:moon-waning-crescent'" />
+            <!-- <Icon :icon="isDark ? 'mdi:white-balance-sunny' : 'mdi:moon-waning-crescent'" /> -->
+            <IconWhiteBalanceSunny v-if="isDark" />
+            <IconMoonWaningCrescent v-else />
             {{ isDark ? 'Light theme' : 'Dark theme' }}
           </button>
         </template>

@@ -1,7 +1,9 @@
+<script setup lang="ts">
+import { IconDotsCircle } from '@iconify-prerendered/vue-mdi'
+</script>
+
 <template>
-  <!-- <span> -->
-  <Icon icon="ph:spinner-bold" />
-  <!-- </span> -->
+  <IconDotsCircle />
 </template>
 
 <style scoped lang="scss">

@@ -5,17 +5,6 @@ To get you started, head to the `/frontend/` directory and use the `npm install`
 To open a development server, simply write `npm run dev`.
 
 ---
-
-## Components
-
-Adding icons into the template:
-
-```js
-// We will be using the Material Design Symbols pack
-// https://icones.js.org/collection/material-symbols
-<Icon icon="material-symbols:123" />
-```
-
 ## Styling
 
 Preferred font-sizes: `1.2rem`, `1.4rem`, `1.6rem` and so on

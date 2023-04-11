@@ -2,6 +2,16 @@
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import { useOffsetPagination, useWindowScroll } from '@vueuse/core'
 import { useRouteHash } from '@vueuse/router'
+import {
+  IconArrowUp,
+  IconChevronLeft,
+  IconChevronRight,
+  IconCode,
+  IconDotsGrid,
+  IconFormatListBulletedSquare,
+  IconMagnify,
+  IconViewGrid,
+} from '@iconify-prerendered/vue-mdi'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useLoading } from '../../store/loading'
 import { LOAD } from '../../js/definitions'
@@ -103,7 +113,7 @@ onMounted(() => {
       <div class="list-search">
         <div class="input-wrap" :class="{ 'has-input': search }">
           <div class="icon">
-            <Icon icon="mdi:magnify" />
+            <IconMagnify />
           </div>
           <input
             v-model="search"
@@ -129,13 +139,13 @@ onMounted(() => {
 
           <div v-if="filteredAliases.length > paginationSize" class="list-pagination">
             <button class="button btn-white btn-icon" :disabled="isFirstPage" @click="prev">
-              <Icon icon="mdi:chevron-left" />
+              <IconChevronLeft />
             </button>
             <span>
               {{ currentPage }}
             </span>
             <button class="button btn-white btn-icon" :disabled="isLastPage" @click="next">
-              <Icon icon="mdi:chevron-right" />
+              <IconChevronRight />
             </button>
           </div>
 
@@ -146,7 +156,7 @@ onMounted(() => {
               :class="[displayType === 'small-icon' ? 'btn-accent' : 'btn-white']"
               @click="displayType = 'small-icon'"
             >
-              <Icon icon="mdi:dots-grid" />
+              <IconDotsGrid />
             </button>
             <button
               class="button btn-icon"
@@ -154,7 +164,7 @@ onMounted(() => {
               :class="[displayType === 'large-icon' ? 'btn-accent' : 'btn-white']"
               @click="displayType = 'large-icon'"
             >
-              <Icon icon="ph:squares-four-fill" />
+              <IconViewGrid />
             </button>
             <button
               class="button btn-icon"
@@ -162,7 +172,7 @@ onMounted(() => {
               :class="[displayType === 'list' ? 'btn-accent' : 'btn-white']"
               @click="displayType = 'list'"
             >
-              <Icon icon="mdi:format-list-bulleted-square" />
+              <IconFormatListBulletedSquare />
             </button>
           </div>
         </div>
@@ -198,13 +208,13 @@ onMounted(() => {
       </div>
 
       <button :style="{ opacity: y > 250 ? 1 : 0 }" class="button btn-white btn-icon btn-go-up" @click="goUp()">
-        <Icon icon="mdi:arrow-up" />
+        <IconArrowUp />
       </button>
     </div>
 
     <footer>
       <p class="made-by">
-        <Icon icon="mdi:code" />
+        <IconCode />
         Made by <a href="https://github.com/mavulp" target="_blank">Mavulp</a> in 2023
       </p>
     </footer>

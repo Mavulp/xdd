@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { IconCheckboxBlank, IconCheckboxMarked } from '@iconify-prerendered/vue-mdi'
 
 interface Props {
   label?: string
   modelValue: boolean
-  iconOn?: string
-  iconOff?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  iconOn: 'ph:check-square',
-  iconOff: 'ph:square',
-})
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
@@ -35,7 +31,8 @@ const d = computed(() => `id${Math.random().toString(16).slice(2)}`)
     <label :for="d">
 
       <div class="icon">
-        <Icon :icon="modelValue ? props.iconOn : props.iconOff" />
+        <IconCheckboxMarked v-if="modelValue" />
+        <IconCheckboxBlank v-else />
       </div>
 
       <p v-if="props.label">{{ props.label }}</p>
