@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { useDark, useToggle } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { TOKEN_KEY } from '../../js/config'
 import { post } from '../../js/fetch'
@@ -18,6 +19,14 @@ async function signOut() {
   user.reset()
   router.push({ name: 'RouteSignOut' })
 }
+
+const isDark = useDark({
+  selector: 'html',
+  attribute: 'class',
+  valueDark: 'dark-theme',
+  valueLight: 'light-theme',
+})
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
@@ -53,7 +62,12 @@ async function signOut() {
         </template>
         <template #default>
           <button class="button btn-white btn-small btn-full" @click="signOut()">
+            <Icon icon="mdi:account" />
             Sign Out
+          </button>
+          <button class="button btn-white btn-small btn-full" @click="toggleDark()">
+            <Icon :icon="isDark ? 'mdi:white-balance-sunny' : 'mdi:moon-waning-crescent'" />
+            {{ isDark ? 'Light theme' : 'Dark theme' }}
           </button>
         </template>
       </Dropdown>
