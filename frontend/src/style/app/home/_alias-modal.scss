@@ -35,6 +35,7 @@
     @include flex(40px);
     // @include grid(40px, 256px 1fr);
     padding: 20px;
+    border-radius: 8px;
 
     .content {
       @include flex(0, center, center);

@@ -202,7 +202,7 @@ watch(() => form.content, async (value) => {
 
           <p v-if="!isEdit" class="form-note">
             <Icon icon="mdi:info" />
-            The type is automatically set based on the input. But you can change it. <br> The main difference between an <code>image/gif</code> and a <code>emote/animatedEmote</code> is the size. Emotes (below {{ emoteSizeThreshold }}x{{ emoteSizeThreshold }}) are displayed inline with text while <br> images / gifs render in full size, pushing the remaining content aside.
+            The type is automatically set based on the input but can be changed. <br> The main difference between an <code>image/gif</code> and a <code>emote/animatedEmote</code> is the size. Emotes (below {{ emoteSizeThreshold }}x{{ emoteSizeThreshold }}) are displayed inline with text while <br> images / gifs render in full size, pushing the remaining content aside.
           </p>
 
           <div class="flex right">

@@ -10,4 +10,33 @@
   .alias-modal .modal-wrapper {
     background-color: rgba(#e6e6e6, 0.8);
   }
+
+  header .user.router-link-active,
+  header .user:hover,
+  header a:not(.disable-hover).router-link-active,
+  header a:not(.disable-hover):hover {
+    color: #e7e7e7;
+
+    span {
+      color: #e7e7e7;
+    }
+  }
+
+  .alias-item.alias-active .name span,
+  .alias-item:hover .name span {
+    color: var(--color-text);
+  }
+
+  .btn-go-up svg,
+  .alias-modal .modal-wrapper .info .name svg {
+    color: var(--color-text) !important;
+  }
+
+  .route-create .form-note svg {
+    color: var(--color-border);
+  }
+
+  .route-create .form-wrap .form-preview {
+    border: none;
+  }
 }
