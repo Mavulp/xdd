@@ -2,7 +2,8 @@
 import { computed, onBeforeMount, reactive, watch } from 'vue'
 import { maxLenNoSpace, maxLength, minLenNoSpace, minLength, required, url, useValidation } from '@dolanske/v-valid'
 import { useRoute, useRouter } from 'vue-router'
-import { IconClose, IconInfo } from '@iconify-prerendered/vue-mdi'
+import { IconClose, IconInfo, IconUpload } from '@iconify-prerendered/vue-mdi'
+import type { AliasType } from 'src/types/AliasType'
 import type { PostAlias } from '../../types/PostAlias'
 import InputText from '../../components/form/InputText.vue'
 import InputTextarea from '../../components/form/InputTextarea.vue'
@@ -13,6 +14,7 @@ import InputSelect from '../../components/form/InputSelect.vue'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useToast } from '../../store/toast'
 import { isImageValidRule, noExclamationMarkRule } from '../../js/rules'
+import { post } from '../../js/fetch'
 
 const loading = useLoading()
 const alias = useAlias()
@@ -108,38 +110,110 @@ const defaultMeta = {
 const emoteSizeThreshold = 40
 const contentMeta = reactive({ ...defaultMeta })
 
+// Checks for content type
+// By default also assigns image metadata to the form type
+function getContentType(value: string, assignMeta = true): Promise<AliasType> {
+  return new Promise((resolve) => {
+    if (url.validate(value)) {
+      const image = new Image()
+      image.src = value
+
+      image.onload = () => {
+        if (assignMeta) {
+          Object.assign(contentMeta, {
+            url: image.src,
+            width: image.naturalWidth,
+            height: image.naturalHeight,
+            type: image.src.split('.').at(-1),
+          })
+        }
+
+        if (image.naturalHeight > emoteSizeThreshold || image.naturalWidth > emoteSizeThreshold)
+          resolve(value.endsWith('.gif') ? 'gif' : 'image')
+        else
+          resolve(value.endsWith('.gif') ? 'animatedEmote' : 'emote')
+      }
+
+      // On whatever error, just stick to text
+      image.onerror = () => resolve('text')
+    }
+    else {
+      resolve('text')
+    }
+  })
+}
+
 watch(() => form.content, async (value) => {
-  console.log(url.validate(value))
-
   Object.assign(contentMeta, { ...defaultMeta })
-
   if (!value)
     return
 
-  // Check if content is URL or plain text
-  if (url.validate(value)) {
-    const image = new Image()
-    image.src = value
-
-    image.onload = () => {
-      // contentUrl.value = image.src
-      Object.assign(contentMeta, {
-        url: image.src,
-        width: image.naturalWidth,
-        height: image.naturalHeight,
-        type: image.src.split('.').at(-1),
-      })
-
-      if (image.naturalHeight > emoteSizeThreshold || image.naturalWidth > emoteSizeThreshold)
-        form.type = value.endsWith('.gif') ? 'gif' : 'image'
-      else
-        form.type = value.endsWith('.gif') ? 'animatedEmote' : 'emote'
-    }
-  }
-  else {
-    form.type = 'text'
-  }
+  form.type = await getContentType(value)
 })
+
+// Upload CSV files
+function showFileInput() {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.oninput = e => upladCSV(e)
+  input.click()
+}
+
+function upladCSV(e: Event) {
+  const files = (e.target as HTMLInputElement).files
+
+  if (files) {
+    loading.add(LOAD.UPLOAD)
+
+    const file = files[0]
+    const reader = new FileReader()
+
+    reader.onload = async (e) => {
+      let finalResult: string
+      const result = e?.target?.result
+
+      if (!result) {
+        loading.del(LOAD.UPLOAD)
+        return
+      }
+
+      // Convery any options to just string
+      if (typeof result !== 'string') {
+        const encoder = new TextDecoder('utf-8')
+        finalResult = encoder.decode(result)
+      }
+      else {
+        finalResult = result
+      }
+
+      const promises = []
+
+      for (const row of finalResult.split('\n')) {
+        const [name, content] = row.split(/,(.*)/s)
+        // Create form
+        const type = await getContentType(content, false)
+        const alias = { name, content, type }
+        promises.push(post('/alias', alias))
+      }
+
+      Promise.all(promises)
+        .then(() => toast.push({
+          type: 'success',
+          message: `Successfully uploaded ${promises.length} aliases`,
+        }))
+        .catch(e => toast.push({
+          type: 'error',
+          message: `Error uploading a CSV file. ${e}`,
+        }))
+        .finally(() => {
+          loading.del(LOAD.UPLOAD)
+        })
+    }
+
+    reader.onerror = () => loading.del(LOAD.UPLOAD)
+    reader.readAsBinaryString(file)
+  }
+}
 </script>
 
 <template>
@@ -214,6 +288,15 @@ watch(() => form.content, async (value) => {
               <IconClose />
               Cancel
             </button>
+
+            <button class="button btn-gray btn-wider" type="button" style="width:87px;" @click="showFileInput">
+              <Spinner v-if="loading.get(LOAD.UPLOAD)" />
+              <template v-else>
+                <IconUpload />
+                CSV
+              </template>
+            </button>
+
             <button
               class="button btn-accent btn-wider"
               :disabled="loading.get(LOAD.CREATE, LOAD.EDIT)"

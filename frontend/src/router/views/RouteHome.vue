@@ -61,7 +61,7 @@ const filteredAliases = computed(() => {
 })
 
 // Pagination setup
-const paginationSize = 50
+const paginationSize = 112
 const {
   currentPage,
   prev,
@@ -77,7 +77,8 @@ const {
 // Pagination array to render
 const aliasesToRender = computed(() => {
   const start = (currentPage.value - 1) * paginationSize
-  const end = start + paginationSize - 1
+  const end = start + paginationSize
+
   return filteredAliases.value.slice(start, end)
 })
 
