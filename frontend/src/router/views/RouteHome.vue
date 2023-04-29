@@ -63,7 +63,7 @@ const filteredAliases = computed(() => {
 // Pagination setup
 const total = computed(() => filteredAliases.value.length)
 const page = ref(1)
-const pageSize = 112
+const pageSize = 140
 
 watch(filter, () => page.value = 1, { deep: true })
 

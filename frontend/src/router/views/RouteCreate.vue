@@ -173,11 +173,15 @@ function upladCSV(e: Event) {
       const result = e?.target?.result
 
       if (!result) {
+        toast.push({
+          type: 'error',
+          message: 'Could not process the uploaded file',
+        })
         loading.del(LOAD.UPLOAD)
         return
       }
 
-      // Convery any options to just string
+      // Convert any options to just string
       if (typeof result !== 'string') {
         const encoder = new TextDecoder('utf-8')
         finalResult = encoder.decode(result)
@@ -188,9 +192,10 @@ function upladCSV(e: Event) {
 
       const promises = []
 
+      // Iterate over rows
       for (const row of finalResult.split('\n')) {
         const [name, content] = row.split(/,(.*)/s)
-        // Create form
+        // Create form submit object
         const type = await getContentType(content, false)
         const alias = { name, content, type }
         promises.push(post('/alias', alias))
@@ -210,8 +215,20 @@ function upladCSV(e: Event) {
         })
     }
 
-    reader.onerror = () => loading.del(LOAD.UPLOAD)
+    reader.onerror = () => {
+      toast.push({
+        type: 'error',
+        message: 'Could not read the CSV file',
+      })
+      loading.del(LOAD.UPLOAD)
+    }
     reader.readAsBinaryString(file)
+  }
+  else {
+    toast.push({
+      type: 'error',
+      message: 'No file was input',
+    })
   }
 }
 </script>
