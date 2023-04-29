@@ -4,6 +4,7 @@ nothing
 
 ## Done
 
+- [x] Fix pagination not working on initial load and set page to 1 on filters
 - [x] Tweak light mode colors
 - [x] Add light mode toggle
 - [x] Add active emote to the URL (open it with it too)

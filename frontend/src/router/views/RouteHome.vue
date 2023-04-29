@@ -61,23 +61,24 @@ const filteredAliases = computed(() => {
 })
 
 // Pagination setup
-const paginationSize = 112
+const total = computed(() => filteredAliases.value.length)
+const page = ref(1)
+const pageSize = 112
+
+watch(filter, () => page.value = 1, { deep: true })
+
 const {
   currentPage,
   prev,
   next,
   isFirstPage,
   isLastPage,
-} = useOffsetPagination({
-  total: filteredAliases.value.length,
-  pageSize: paginationSize,
-  page: 1,
-})
+} = useOffsetPagination({ total, pageSize, page })
 
 // Pagination array to render
 const aliasesToRender = computed(() => {
-  const start = (currentPage.value - 1) * paginationSize
-  const end = start + paginationSize
+  const start = (currentPage.value - 1) * pageSize
+  const end = start + pageSize
 
   return filteredAliases.value.slice(start, end)
 })
@@ -138,7 +139,7 @@ onMounted(() => {
 
           <div class="flex-1" />
 
-          <div v-if="filteredAliases.length > paginationSize" class="list-pagination">
+          <div v-if="filteredAliases.length > pageSize" class="list-pagination">
             <button class="button btn-white btn-icon" :disabled="isFirstPage" @click="prev">
               <IconChevronLeft />
             </button>
