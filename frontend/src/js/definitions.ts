@@ -7,4 +7,5 @@ export const LOAD = {
   EDIT: 'alias-edit',
   FETCH: 'alias-fetch',
   APP: 'app',
+  UPLOAD: 'alias-upload-csv',
 } as const
