@@ -13,7 +13,7 @@ import Spinner from '../../components/generic/Spinner.vue'
 import InputSelect from '../../components/form/InputSelect.vue'
 import { categoryLabels, useAlias } from '../../store/alias'
 import { useToast } from '../../store/toast'
-import { isImageValidRule, noExclamationMarkRule } from '../../js/rules'
+import { isImageValidRule, noExclamationMarkRule, noSpaceRule } from '../../js/rules'
 import { post } from '../../js/fetch'
 
 const loading = useLoading()
@@ -36,6 +36,7 @@ const rules = {
     minLength: minLenNoSpace(1),
     maxLength: maxLenNoSpace(24),
     noExclamationMarkRule,
+    noSpaceRule,
   },
   content: {
     required,

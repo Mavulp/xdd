@@ -11,3 +11,7 @@ export const isImageValidRule = $def((value: string) => {
 export const noExclamationMarkRule = $def((value: string) => {
   return !value.startsWith('!')
 }, 'Don\'t add exclamation mark (\'!\') at the start of alias name')
+
+export const noSpaceRule = $def((value: string) => {
+  return !/\s/g.test(value)
+}, 'Don\'t use white spaces in the alias name')

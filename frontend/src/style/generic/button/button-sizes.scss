@@ -23,11 +23,13 @@
   &.btn-icon {
     @include flex(0, center, center);
     width: 35px;
+    min-width: 35px;
     line-height: 35px;
     padding: 0;
 
     &.btn-large {
       width: 42px;
+      min-width: 42px;
       line-height: 42px;
 
       svg {
