@@ -26,4 +26,4 @@ The app also supports importing large amounts of aliases in the form of a CSV fi
 
 ---
 
-The app uses authentication and permission system provided by our own authentication system [idlib](https://github.com/Mavulp/hiveID).
+The app uses our own authentication and permission system called [idlib](https://github.com/Mavulp/hiveID).
